@@ -1,0 +1,75 @@
+---
+id: 5a550219-43e5-496a-a2db-eda6931e000d
+---
+graph TB
+    %% External Sources
+    Operators[🧑‍💼 Site Operators]
+    RawMaterials[🪨 Raw Materials Input]
+
+    %% Sub-processes
+    P11[⚡ P1.1: Raw Material<br/>Intake & Validation]
+    P12[🔨 P1.2: Crushing<br/>Operations]
+    P13[📏 P1.3: Material<br/>Classification & Sizing]
+    P14[🧪 P1.4: Quality Control<br/>& Testing]
+    P15[📊 P1.5: Production<br/>Monitoring & Recording]
+
+    %% Data Stores
+    DS1[(D1: Materials<br/>Master)]
+    DS2[(D2: Production<br/>Records)]
+    DS8[(D8: Quality<br/>Control Log)]
+    DS9[(D9: Equipment<br/>Performance)]
+
+    %% Equipment Integration
+    Crusher1[🏭 Static Crusher No-1<br/>112 hours total]
+    Crusher2[🏭 Static Crusher No-2<br/>98 hours total]
+    MobileScreen[📱 Mobile Screen 7707<br/>84 hours total]
+
+    %% Input Flows
+    RawMaterials -->|Raw Feed Material| P11
+    Operators -->|Intake Instructions| P11
+    Operators -->|Crushing Parameters| P12
+    Operators -->|Quality Standards| P14
+
+    %% Process Flow
+    P11 -->|Validated Raw Material| P12
+    P12 -->|Crushed Material| P13
+    P13 -->|Classified Materials| P14
+    P14 -->|Quality Approved Materials| P15
+
+    %% Equipment Integration
+    P12 -.->|Crushing Commands| Crusher1
+    P12 -.->|Crushing Commands| Crusher2
+    P13 -.->|Screening Commands| MobileScreen
+    Crusher1 -.->|Crusher Output| P12
+    Crusher2 -.->|Crusher Output| P12
+    MobileScreen -.->|Screened Materials| P13
+
+    %% Data Store Interactions
+    P11 -.->|Material Specifications| DS1
+    P13 -.->|Size Classifications| DS1
+    P14 -->|Quality Records| DS8
+    P15 -->|Production Data| DS2
+    P15 -.->|Equipment Performance| DS9
+
+    %% Material Types Output with Actual Quantities
+    P15 -->|Aggregate 3/4&quot;: 7,840T| MaterialOutput[📦 To Inventory<br/>Management]
+    P15 -->|Aggregate 3/8&quot;: 7,840T| MaterialOutput
+    P15 -->|Aggregate 1/2&quot;: 2,800T| MaterialOutput
+    P15 -->|Subbase: 9,800T| MaterialOutput
+    P15 -->|Sand: 11,340T| MaterialOutput
+    P15 -->|Powder: 3,940T| MaterialOutput
+    P15 -->|0-5mm Fine: 5,020T| MaterialOutput
+    P15 -->|Oversize: 4,900T| MaterialOutput
+    P15 -->|Zero 3/16&quot;: 560T| MaterialOutput
+    P15 -->|2&quot; Material: 200T| MaterialOutput
+
+    %% Styling
+    style P11 fill:#e8eaf6,stroke:#3f51b5,stroke-width:2px
+    style P12 fill:#ffebee,stroke:#f44336,stroke-width:2px
+    style P13 fill:#e0f2f1,stroke:#4caf50,stroke-width:2px
+    style P14 fill:#fff3e0,stroke:#ff9800,stroke-width:2px
+    style P15 fill:#f3e5f5,stroke:#9c27b0,stroke-width:2px
+
+    style Crusher1 fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style Crusher2 fill:#ffcdd2,stroke:#d32f2f,stroke-width:2px
+    style MobileScreen fill:#c8e6c9,stroke:#388e3c,stroke-width:2px
