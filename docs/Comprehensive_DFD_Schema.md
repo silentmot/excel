@@ -1,4 +1,4 @@
-# Comprehensive Data Flow Diagram (DFD) - Construction Site Operations Schema
+# Data Flow Diagram (DFD) - Construction Site Operations Schema
 
 **ALASLA Construction Management System**
 **Created**: October 5, 2025
@@ -8,7 +8,7 @@
 
 ## **DFD System Overview**
 
-This document presents the most comprehensive Data Flow Diagram system for construction site operations, featuring multi-level process decomposition, complete data lineage tracking, and advanced exception handling mechanisms.
+This document presents the most detailed Data Flow Diagram system for construction site operations, featuring multi-level process decomposition, complete data lineage tracking, and exception handling mechanisms.
 
 ### **System Architecture Levels**
 
@@ -16,7 +16,7 @@ This document presents the most comprehensive Data Flow Diagram system for const
 - **Level 1**: Major process decomposition with data store relationships
 - **Level 2**: Detailed sub-process analysis for critical operations
 - **ERD Integration**: Complete entity relationship mapping
-- **Data Dictionary**: Comprehensive attribute specifications
+- **Data Dictionary**: Attribute specifications
 
 ---
 
@@ -25,13 +25,13 @@ This document presents the most comprehensive Data Flow Diagram system for const
 ```mermaid
 graph TB
     %% External Entities
-    Operators[🧑‍💼 Site Operators]
-    Management[📊 Management]
-    Customers[🚛 Customers]
-    Suppliers[🏭 Raw Material Suppliers]
+    Operators[Site Operators]
+    Management[Management]
+    Customers[Customers]
+    Suppliers[Raw Material Suppliers]
 
     %% Main System
-    ConstructionMgmt[🏗️ ALASLA Construction<br/>Management System]
+    ConstructionMgmt[ALASLA Construction<br/>Management System]
 
     %% Data Flows - Inputs
     Operators -->|Daily Production Data| ConstructionMgmt
@@ -59,7 +59,7 @@ graph TB
 | **Entity**         | **Role**                                   | **Data Provided**                                      | **Data Received**                           |
 | ------------------ | ------------------------------------------ | ------------------------------------------------------ | ------------------------------------------- |
 | **Site Operators** | Field personnel managing daily operations  | Production data, equipment usage, workforce attendance | Operation schedules, performance reports    |
-| **Management**     | Executive oversight and strategic planning | Strategic directives, resource allocation              | Comprehensive reports, analytics, alerts    |
+| **Management**     | Executive oversight and strategic planning | Strategic directives, resource allocation              | Reports, analytics, alerts    |
 | **Customers**      | Material purchasers and end users          | Material orders, delivery requirements                 | Material deliveries, dispatch documentation |
 | **Suppliers**      | Raw material providers                     | Raw material supply, delivery schedules                | Supply requirements, inventory forecasts    |
 
@@ -70,18 +70,18 @@ graph TB
 ```mermaid
 graph TB
     %% External Entities
-    Operators[🧑‍💼 Site Operators]
-    Management[📊 Management]
-    Customers[🚛 Customers]
-    Suppliers[🏭 Suppliers]
+    Operators[Site Operators]
+    Management[Management]
+    Customers[Customers]
+    Suppliers[Suppliers]
 
     %% Main Processes
-    P1[⚙️ P1: Material Production<br/>Processing]
-    P2[📦 P2: Inventory<br/>Management]
-    P3[🚚 P3: Material<br/>Dispatch]
-    P4[🔧 P4: Equipment<br/>Operations]
-    P5[👥 P5: Workforce<br/>Management]
-    P6[📋 P6: Daily Reporting<br/>& Analytics]
+    P1[P1: Material Production<br/>Processing]
+    P2[P2: Inventory<br/>Management]
+    P3[P3: Material<br/>Dispatch]
+    P4[P4: Equipment<br/>Operations]
+    P5[P5: Workforce<br/>Management]
+    P6[P6: Daily Reporting<br/>& Analytics]
 
     %% Data Stores
     DS1[(D1: Materials<br/>Master)]
@@ -160,22 +160,22 @@ graph TB
 
 ## **Level 2 - Material Production Processing (P1 Decomposition)**
 
-```mermaid  
+```mermaid
 ---
 id: 5a550219-43e5-496a-a2db-eda6931e000d
 layout: elk
 ---
 graph TB
     %% External Sources
-    Operators[🧑‍💼 Site Operators]
-    RawMaterials[🪨 Raw Materials Input]
+    Operators[Site Operators]
+    RawMaterials[Raw Materials Input]
 
     %% Sub-processes
-    P11[⚡ P1.1: Raw Material<br/>Intake & Validation]
-    P12[🔨 P1.2: Crushing<br/>Operations]
-    P13[📏 P1.3: Material<br/>Classification & Sizing]
-    P14[🧪 P1.4: Quality Control<br/>& Testing]
-    P15[📊 P1.5: Production<br/>Monitoring & Recording]
+    P11[P1.1: Raw Material<br/>Intake & Validation]
+    P12[P1.2: Crushing<br/>Operations]
+    P13[P1.3: Material<br/>Classification & Sizing]
+    P14[P1.4: Quality Control<br/>& Testing]
+    P15[P1.5: Production<br/>Monitoring & Recording]
 
     %% Data Stores
     DS1[(D1: Materials<br/>Master)]
@@ -184,9 +184,9 @@ graph TB
     DS9[(D9: Equipment<br/>Performance)]
 
     %% Equipment Integration
-    Crusher1[🏭 Static Crusher No-1<br/>112 hours total]
-    Crusher2[🏭 Static Crusher No-2<br/>98 hours total]
-    MobileScreen[📱 Mobile Screen 7707<br/>84 hours total]
+    Crusher1[Static Crusher No-1<br/>112 hours total]
+    Crusher2[Static Crusher No-2<br/>98 hours total]
+    MobileScreen[Mobile Screen 7707<br/>84 hours total]
 
     %% Input Flows
     RawMaterials -->|Raw Feed Material| P11
@@ -256,15 +256,15 @@ graph TB
 ```mermaid
 graph TB
     %% External Entities
-    Customers[🚛 Customers]
-    Operators[🧑‍💼 Site Operators]
+    Customers[Customers]
+    Operators[Site Operators]
 
     %% Sub-processes
-    P31[📋 P3.1: Order<br/>Processing]
-    P32[🔍 P3.2: Inventory<br/>Availability Check]
-    P33[⚖️ P3.3: Material<br/>Weighing & Loading]
-    P34[📄 P3.4: Dispatch<br/>Documentation]
-    P35[🚚 P3.5: Truck<br/>Management]
+    P31[P3.1: Order<br/>Processing]
+    P32[P3.2: Inventory<br/>Availability Check]
+    P33[P3.3: Material<br/>Weighing & Loading]
+    P34[P3.4: Dispatch<br/>Documentation]
+    P35[P3.5: Truck<br/>Management]
 
     %% Data Stores
     DS3[(D3: Inventory<br/>Status)]
@@ -326,14 +326,14 @@ graph TB
 
 | **Material Type**  | **Production (T)** | **Dispatched (T)** | **Balance (T)** | **Status**          |
 | ------------------ | ------------------ | ------------------ | --------------- | ------------------- |
-| **Aggregate 3/4"** | 7,840.0            | 8,195.4            | -355.4          | ⚠️ OVER-DISPATCH    |
-| **Aggregate 3/8"** | 7,840.0            | 6,839.6            | +1,000.4        | ✅ UNDER-DISPATCH   |
-| **Subbase**        | 9,800.0            | 4,580.5            | +5,219.5        | ✅ UNDER-DISPATCH   |
-| **Sand**           | 11,340.0           | 4,501.3            | +6,838.7        | ✅ UNDER-DISPATCH   |
-| **0-5mm Fine**     | 5,020.0            | 4,142.6            | +877.4          | ✅ AVAILABLE        |
-| **Oversize**       | 4,900.0            | 3,886.3            | +1,013.7        | ✅ AVAILABLE        |
-| **Powder**         | 3,940.0            | 2,501.0            | +1,439.0        | ✅ AVAILABLE        |
-| **Aggregate 1/2"** | 2,800.0            | 74.7               | +2,725.3        | ✅ HIGHLY AVAILABLE |
+| **Aggregate 3/4"** | 7,840.0            | 8,195.4            | -355.4          | OVER-DISPATCH    |
+| **Aggregate 3/8"** | 7,840.0            | 6,839.6            | +1,000.4        | UNDER-DISPATCH   |
+| **Subbase**        | 9,800.0            | 4,580.5            | +5,219.5        | UNDER-DISPATCH   |
+| **Sand**           | 11,340.0           | 4,501.3            | +6,838.7        | UNDER-DISPATCH   |
+| **0-5mm Fine**     | 5,020.0            | 4,142.6            | +877.4          | AVAILABLE        |
+| **Oversize**       | 4,900.0            | 3,886.3            | +1,013.7        | AVAILABLE        |
+| **Powder**         | 3,940.0            | 2,501.0            | +1,439.0        | AVAILABLE        |
+| **Aggregate 1/2"** | 2,800.0            | 74.7               | +2,725.3        | HIGHLY AVAILABLE |
 
 ---
 
@@ -342,20 +342,20 @@ graph TB
 ```mermaid
 graph TB
     %% External Entities
-    Operators[🧑‍💼 Equipment Operators]
-    Maintenance[🔧 Maintenance Team]
+    Operators[Equipment Operators]
+    Maintenance[Maintenance Team]
 
     %% Sub-processes
-    P41[⏰ P4.1: Equipment<br/>Scheduling]
-    P42[▶️ P4.2: Equipment<br/>Operation Tracking]
-    P43[📊 P4.3: Performance<br/>Monitoring]
-    P44[🛠️ P4.4: Maintenance<br/>Management]
-    P45[📋 P4.5: Equipment<br/>Reporting]
+    P41[P4.1: Equipment<br/>Scheduling]
+    P42[P4.2: Equipment<br/>Operation Tracking]
+    P43[P4.3: Performance<br/>Monitoring]
+    P44[P4.4: Maintenance<br/>Management]
+    P45[P4.5: Equipment<br/>Reporting]
 
     %% Equipment Categories with Actual Usage Data
-    Crushers[🏭 Crushing Equipment<br/>Static #1: 112hrs<br/>Static #2: 98hrs<br/>Mobile Screen: 84hrs<br/>TOTAL: 294hrs]
-    HeavyEquip[🚜 Heavy Equipment<br/>Excavator: 260hrs<br/>Front Loader: 510hrs<br/>Bulldozer: 130hrs<br/>Dumper: 510hrs<br/>TOTAL: 1,410hrs]
-    SpecialEquip[⚙️ Special Equipment<br/>Grader: 0hrs (UNUSED)<br/>Winch: 0hrs (UNUSED)<br/>TOTAL: 0hrs]
+    Crushers[Crushing Equipment<br/>Static #1: 112hrs<br/>Static #2: 98hrs<br/>Mobile Screen: 84hrs<br/>TOTAL: 294hrs]
+    HeavyEquip[Heavy Equipment<br/>Excavator: 260hrs<br/>Front Loader: 510hrs<br/>Bulldozer: 130hrs<br/>Dumper: 510hrs<br/>TOTAL: 1,410hrs]
+    SpecialEquip[Special Equipment<br/>Grader: 0hrs (UNUSED)<br/>Winch: 0hrs (UNUSED)<br/>TOTAL: 0hrs]
 
     %% Data Stores
     DS4[(D4: Equipment<br/>Log)]
@@ -429,24 +429,27 @@ graph TB
 ## **Level 2 - Daily Reporting & Analytics (P6 Decomposition)**
 
 ```mermaid
+---
+id: 75c46253-b7e3-4b6c-a30f-c4c796b5e253
+---
 graph TB
     %% External Entities
-    Management[📊 Management]
-    Operators[🧑‍💼 Site Operators]
+    Management[Management]
+    Operators[Site Operators]
 
     %% Sub-processes
-    P61[📥 P6.1: Data<br/>Collection & Aggregation]
-    P62[🔄 P6.2: Data<br/>Transformation & Validation]
-    P63[📊 P6.3: Report<br/>Generation]
-    P64[📈 P6.4: Analytics<br/>& Insights]
-    P65[⚠️ P6.5: Exception<br/>& Alert Management]
+    P61[P6.1: Data<br/>Collection & Aggregation]
+    P62[P6.2: Data<br/>Transformation & Validation]
+    P63[P6.3: Report<br/>Generation]
+    P64[P6.4: Analytics<br/>& Insights]
+    P65[P6.5: Exception<br/>& Alert Management]
 
     %% Data Sources with Actual Values
-    ProductionData[📦 Production Data<br/>54,240T Total]
-    InventoryData[📋 Inventory Data<br/>Current Stock Levels]
-    DispatchData[🚚 Dispatch Data<br/>30,794.9T Total]
-    EquipmentData[🔧 Equipment Data<br/>1,704 Hours Total]
-    WorkforceData[👥 Workforce Data<br/>344 Personnel Total]
+    ProductionData[Production Data<br/>54,240T Total]
+    InventoryData[Inventory Data<br/>Current Stock Levels]
+    DispatchData[Dispatch Data<br/>30,794.9T Total]
+    EquipmentData[Equipment Data<br/>1,704 Hours Total]
+    WorkforceData[Workforce Data<br/>344 Personnel Total]
 
     %% Data Stores
     DS2[(D2: Production<br/>Records)]
@@ -484,18 +487,18 @@ graph TB
     P64 -->|Real-time KPI Metrics| DS16
 
     %% Key Performance Indicators
-    P64 -->|Production Efficiency: 100%<br/>Target vs Actual Analysis| AnalyticsOutput[📊 Management<br/>Insights & KPIs]
-    P64 -->|Dispatch Rate: 56.7%<br/>(30,795T / 54,240T)| AnalyticsOutput
+    P64 -->|Production Efficiency: 100%<br/>Target vs Actual Analysis| AnalyticsOutput[Management<br/>Insights & KPIs]
+    P64 -->|"Dispatch Rate: 56.7%<br/>(30,795T / 54,240T)"| AnalyticsOutput
     P64 -->|Equipment Utilization: 82.7%<br/>Heavy Equipment Category| AnalyticsOutput
     P64 -->|Workforce Productivity<br/>Personnel per Ton Analysis| AnalyticsOutput
     P64 -->|Material Balance Tracking<br/>Inventory Optimization| AnalyticsOutput
 
     %% Exception & Alert Management
-    P65 -->|🚨 CRITICAL ALERT<br/>Aggregate 3/4" Over-dispatch: -355.4T| AlertOutput[⚠️ Exception<br/>Management System]
-    P65 -->|🚨 SYSTEM ERROR<br/>#REF! Formula Error in Calculations| AlertOutput
-    P65 -->|⚠️ RESOURCE ALERT<br/>Equipment Underutilization: Grader (0hrs)| AlertOutput
-    P65 -->|⚠️ QUALITY ALERT<br/>Data Inconsistency: Material Naming| AlertOutput
-    P65 -->|📊 TREND ALERT<br/>Production vs Dispatch Imbalance| AlertOutput
+    P65 -->|CRITICAL ALERT<br/>Aggregate 3/4" Over-dispatch: -355.4T| AlertOutput[Exception<br/>Management System]
+    P65 -->|SYSTEM ERROR<br/>#REF! Formula Error in Calculations| AlertOutput
+    P65 -->|RESOURCE ALERT<br/>Equipment Underutilization: Grader (0hrs)| AlertOutput
+    P65 -->|QUALITY ALERT<br/>Data Inconsistency: Material Naming| AlertOutput
+    P65 -->|TREND ALERT<br/>Production vs Dispatch Imbalance| AlertOutput
 
     %% Output Flows
     P63 -->|Daily Production Reports| Management
@@ -518,12 +521,12 @@ graph TB
 
 | **Category**   | **Metric**       | **Current Value**       | **Target**   | **Status**      |
 | -------------- | ---------------- | ----------------------- | ------------ | --------------- |
-| **Production** | Total Output     | 54,240 T                | Variable     | ✅ ON TARGET    |
-| **Dispatch**   | Delivery Rate    | 56.7% (30,795T)         | 60%          | ⚠️ BELOW TARGET |
-| **Equipment**  | Utilization Rate | 82.7% (Heavy Equip)     | 85%          | ⚠️ NEAR TARGET  |
-| **Inventory**  | Balance Accuracy | -355.4T (Over-dispatch) | 0T           | 🚨 CRITICAL     |
-| **Quality**    | Data Integrity   | #REF! Errors Present    | 0 Errors     | 🚨 CRITICAL     |
-| **Workforce**  | Productivity     | 157.6 T/Person          | 160 T/Person | ⚠️ NEAR TARGET  |
+| **Production** | Total Output     | 54,240 T                | Variable     | ON TARGET    |
+| **Dispatch**   | Delivery Rate    | 56.7% (30,795T)         | 60%          | BELOW TARGET |
+| **Equipment**  | Utilization Rate | 82.7% (Heavy Equip)     | 85%          | NEAR TARGET  |
+| **Inventory**  | Balance Accuracy | -355.4T (Over-dispatch) | 0T           | CRITICAL     |
+| **Quality**    | Data Integrity   | #REF! Errors Present    | 0 Errors     | CRITICAL     |
+| **Workforce**  | Productivity     | 157.6 T/Person          | 160 T/Person | NEAR TARGET  |
 
 ---
 

@@ -8,7 +8,7 @@
 
 ### **Objective**
 
-Analyze the Excel spreadsheet `F:\\alasla.xlsx` to understand data structure, identify patterns, and design a proper database schema for construction site operations management.
+Analyze the Excel spreadsheet ``docs/alasla.csv`` to understand data structure, identify patterns, and design a proper database schema for construction site operations management.
 
 ### **Current State Assessment**
 
@@ -20,7 +20,7 @@ The spreadsheet contains unstructured daily input logs that require transformati
 
 | **Property**       | **Details**                                   |
 | ------------------ | --------------------------------------------- |
-| **File Path**      | `F:\\alasla.xlsx`                             |
+| **File Path**      | ``docs/alasla.csv``                             |
 | **Site Scope**     | Single construction site operations           |
 | **Data Type**      | Daily operational logs and reports            |
 | **Current Format** | Unstructured Excel workbook                   |
@@ -184,7 +184,7 @@ The current naming convention shows size variations of the same base material:
 
 ### **Immediate Actions Required**
 
-1. **Access Excel File**: Open and examine `F:\\alasla.xlsx`
+1. **Access Excel File**: Open and examine ``docs/alasla.csv``
 2. **Sheet Documentation**: Record detailed structure for each sheet
 3. **Sample Data Extraction**: Capture representative data samples
 4. **Pattern Analysis**: Identify data flow patterns

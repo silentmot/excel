@@ -9,7 +9,9 @@
 ### Business Entities & Relationships
 
 ```mermaid
-
+---
+id: e0520f0b-15c3-4097-ba4d-d5609b694a38
+---
 erDiagram
     MATERIALS ||--o{ DAILY_PRODUCTION : "produces"
     MATERIALS ||--o{ DAILY_DISPATCH : "dispatches"
@@ -85,7 +87,9 @@ erDiagram
 ### Complete Attributes & Constraints
 
 ```mermaid
-
+---
+id: 048a7e9f-7917-4c34-96b4-cc9ea944fd39
+---
 erDiagram
     %% Dimension Tables
     MATERIALS {
@@ -177,13 +181,12 @@ erDiagram
 ### Database Engine Specifications
 
 ```mermaid
-
+---
+id: 3adde627-70b2-4fad-80a4-0a0b5b558a7e
+---
 erDiagram
     %% Dimension Tables with Full Specifications
-    MATERIALS["MATERIALS
-    Engine: InnoDB
-    Charset: utf8mb4
-    Collation: utf8mb4_unicode_ci"] {
+    MATERIALS {
         INT material_id PK "AUTO_INCREMENT"
         VARCHAR_100 material_name UK "NOT NULL, INDEX"
         ENUM material_category "('Aggregate','Sand','Subbase','Powder','Other')"
@@ -193,10 +196,7 @@ erDiagram
         TIMESTAMP updated_at "DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
     }
 
-    EQUIPMENT["EQUIPMENT
-    Engine: InnoDB
-    Charset: utf8mb4
-    Collation: utf8mb4_unicode_ci"] {
+    EQUIPMENT {
         INT equipment_id PK "AUTO_INCREMENT"
         VARCHAR_50 equipment_code UK "NOT NULL, INDEX"
         VARCHAR_100 equipment_name "NOT NULL"
@@ -206,10 +206,7 @@ erDiagram
         TIMESTAMP updated_at "DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
     }
 
-    WORKFORCE_ROLES["WORKFORCE_ROLES
-    Engine: InnoDB
-    Charset: utf8mb4
-    Collation: utf8mb4_unicode_ci"] {
+    WORKFORCE_ROLES {
         INT role_id PK "AUTO_INCREMENT"
         VARCHAR_50 role_code UK "NOT NULL, INDEX"
         VARCHAR_100 role_name "NOT NULL"
@@ -219,10 +216,7 @@ erDiagram
     }
 
     %% Fact Tables with Full Specifications
-    DAILY_PRODUCTION["DAILY_PRODUCTION
-    Engine: InnoDB
-    Partition: BY RANGE(YEAR(record_date))
-    Charset: utf8mb4"] {
+    DAILY_PRODUCTION {
         INT record_id PK "AUTO_INCREMENT"
         DATE record_date "NOT NULL, INDEX idx_date"
         INT material_id FK "NOT NULL, INDEX idx_material"
@@ -231,10 +225,7 @@ erDiagram
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
-    DAILY_DISPATCH["DAILY_DISPATCH
-    Engine: InnoDB
-    Partition: BY RANGE(YEAR(dispatch_date))
-    Charset: utf8mb4"] {
+    DAILY_DISPATCH {
         INT dispatch_id PK "AUTO_INCREMENT"
         DATE dispatch_date "NOT NULL, INDEX idx_date"
         INT material_id FK "NOT NULL, INDEX idx_material"
@@ -243,10 +234,7 @@ erDiagram
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
-    EQUIPMENT_UTILIZATION["EQUIPMENT_UTILIZATION
-    Engine: InnoDB
-    Partition: BY RANGE(YEAR(utilization_date))
-    Charset: utf8mb4"] {
+    EQUIPMENT_UTILIZATION {
         INT utilization_id PK "AUTO_INCREMENT"
         DATE utilization_date "NOT NULL, INDEX idx_date"
         INT equipment_id FK "NOT NULL, INDEX idx_equipment"
@@ -255,10 +243,7 @@ erDiagram
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
-    WORKFORCE_ATTENDANCE["WORKFORCE_ATTENDANCE
-    Engine: InnoDB
-    Partition: BY RANGE(YEAR(attendance_date))
-    Charset: utf8mb4"] {
+    WORKFORCE_ATTENDANCE {
         INT attendance_id PK "AUTO_INCREMENT"
         DATE attendance_date "NOT NULL, INDEX idx_date"
         INT role_id FK "NOT NULL, INDEX idx_role"
@@ -267,10 +252,7 @@ erDiagram
         TIMESTAMP created_at "DEFAULT CURRENT_TIMESTAMP"
     }
 
-    OPERATIONAL_METRICS["OPERATIONAL_METRICS
-    Engine: InnoDB
-    Partition: BY RANGE(YEAR(metric_date))
-    Charset: utf8mb4"] {
+    OPERATIONAL_METRICS {
         INT metric_id PK "AUTO_INCREMENT"
         DATE metric_date "NOT NULL, INDEX idx_date"
         VARCHAR_50 metric_type "NOT NULL, INDEX idx_type"
@@ -280,25 +262,11 @@ erDiagram
     }
 
     %% Foreign Key Relationships
-    MATERIALS ||--o{ DAILY_PRODUCTION : "FK_production_material
-    CONSTRAINT FOREIGN KEY
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE"
+    MATERIALS ||--o{ DAILY_PRODUCTION : "FK_production_material"
+    MATERIALS ||--o{ DAILY_DISPATCH : "FK_dispatch_material"
+    EQUIPMENT ||--o{ EQUIPMENT_UTILIZATION : "FK_utilization_equipment"
+    WORKFORCE_ROLES ||--o{ WORKFORCE_ATTENDANCE : "FK_attendance_role"
 
-    MATERIALS ||--o{ DAILY_DISPATCH : "FK_dispatch_material
-    CONSTRAINT FOREIGN KEY
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE"
-
-    EQUIPMENT ||--o{ EQUIPMENT_UTILIZATION : "FK_utilization_equipment
-    CONSTRAINT FOREIGN KEY
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE"
-
-    WORKFORCE_ROLES ||--o{ WORKFORCE_ATTENDANCE : "FK_attendance_role
-    CONSTRAINT FOREIGN KEY
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE"
 ```
 
 ---
@@ -626,6 +594,7 @@ erDiagram
    - **Update**: Equipment ID updates cascade to utilization records
 
 4. **FK_attendance_role**
+
    ```sql
    ALTER TABLE Workforce_Attendance
    ADD CONSTRAINT FK_attendance_role
@@ -633,6 +602,7 @@ erDiagram
    ON DELETE RESTRICT
    ON UPDATE CASCADE;
    ```
+
    - **Rule**: Cannot delete a role if attendance records exist
    - **Update**: Role ID updates cascade to attendance records
 
@@ -667,6 +637,7 @@ erDiagram
    ```
 
 4. **Workforce Headcount Validation**
+
    ```sql
    ALTER TABLE Workforce_Attendance
    ADD CONSTRAINT CHK_workforce_headcount
