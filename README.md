@@ -1,28 +1,37 @@
-# Excel Operations Dashboard (Ops)
+# Excel Operations Management System
 
-> **Construction Site Operations Management System**
-> Data transformation platform for ALASLA construction site - replacing Excel with modern web application
+> **Construction & Demolition Recycling Facility Operations**
+> Transform Excel-based operations into modern web application with Next.js, PostgreSQL, and comprehensive export capabilities
 
 ---
 
 ## **Project Overview**
 
-This is a **Next.js 15 full-stack application** that digitizes construction site operations from Excel/CSV to a modern web platform with authentication, real-time calculations, and multi-format exports.
+This project transforms manual Excel-based data entry for a construction & demolition recycling facility into a Next.js 14+ web application with PostgreSQL database, real-time dashboards, and Excel/Power BI export capabilities.
 
-### **Core Capabilities**
+**Phase 1 Status**: ✅ COMPLETED - Analysis & Planning (October 6, 2025)
+
+**Next Phase**: Database Implementation & Web Application Development
+
+### **Key Features**
 
 - 📊 **Dashboard Analytics** - Real-time operational metrics and visualizations
 - ✍️ **Daily Data Entry** - User-friendly forms for materials, equipment, manpower
-- 🔐 **Microsoft 365 Auth** - Secure access restricted to @sirc.sa domain
-- 🧮 **Excel Calculations** - Server-side mathematical operations (inventory, utilization)
-- 📤 **Multi-Format Export** - Excel, Power BI, and web-based reports
+- 🔐 **NextAuth Authentication** - Secure user access control
+- 🧮 **Excel Calculations** - Server-side mathematical operations replicated from Excel
+- 📤 **Multi-Format Export** - Excel, Power BI dataset generation
 - 📈 **Production Tracking** - Materials production, dispatch, and inventory balance
 - 🚜 **Equipment Monitoring** - Usage hours, utilization rates, and availability
 - 👷 **Manpower Management** - Workforce attendance and role tracking
 
-**Data Source**: `docs/alasla.csv` - ALASLA construction site July 2025 operations
-**User Base**: 15-20 users (@sirc.sa domain)
-**Architecture**: Next.js 15 App Router (Single Application)
+**Data Source**: 4 CSV files analyzed (Oct 2024 - Jul 2025 operations)
+**Architecture**: Next.js 14+ with App Router + PostgreSQL + Prisma ORM
+
+### **Analysis Documents**
+
+- [📊 Data Structure Analysis](./docs/analysis/DATA_STRUCTURE_ANALYSIS.md) - Complete CSV analysis
+- [🏷️ Material Taxonomy](./docs/analysis/MATERIAL_TAXONOMY.md) - 25 materials + 35 aliases
+- [📋 Project Plan](./docs/analysis/PROJECT_PLAN_SUMMARY.md) - Implementation roadmap
 
 ---
 
