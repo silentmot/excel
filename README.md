@@ -1,100 +1,187 @@
 # Excel Operations Dashboard (Ops)
 
 > **Construction Site Operations Management System**
-> Data transformation and visualization platform for ALASLA construction site operations
+> Data transformation platform for ALASLA construction site - replacing Excel with modern web application
 
 ---
 
 ## **Project Overview**
 
-This is a full-stack monorepo application built with **Nx** that processes and visualizes construction site operations data from Excel/CSV sources. The system handles:
+This is a **Next.js 15 full-stack application** that digitizes construction site operations from Excel/CSV to a modern web platform with authentication, real-time calculations, and multi-format exports.
 
-- **Material dispatch tracking** (aggregates, sand, subbase, etc.)
-- **Equipment operations monitoring** (crushers, excavators, loaders)
-- **Manpower resource management** (drivers, operators, maintenance)
-- **Production metrics analysis** (daily output, inventory balance)
-- **Operational reporting** (dashboards, analytics, trends)
+### **Core Capabilities**
+
+- 📊 **Dashboard Analytics** - Real-time operational metrics and visualizations
+- ✍️ **Daily Data Entry** - User-friendly forms for materials, equipment, manpower
+- 🔐 **Microsoft 365 Auth** - Secure access restricted to @sirc.sa domain
+- 🧮 **Excel Calculations** - Server-side mathematical operations (inventory, utilization)
+- 📤 **Multi-Format Export** - Excel, Power BI, and web-based reports
+- 📈 **Production Tracking** - Materials production, dispatch, and inventory balance
+- 🚜 **Equipment Monitoring** - Usage hours, utilization rates, and availability
+- 👷 **Manpower Management** - Workforce attendance and role tracking
 
 **Data Source**: `docs/alasla.csv` - ALASLA construction site July 2025 operations
-**Project Type**: Small-scale operational analytics platform
-**Architecture**: Nx monorepo with Next.js frontend + NestJS backend
+**User Base**: 15-20 users (@sirc.sa domain)
+**Architecture**: Next.js 15 App Router (Single Application)
 
 ---
 
 ## **Technology Stack**
 
-### **Monorepo Management**
+### **Framework & Runtime**
 
-- **Nx 21.6.3** - Smart monorepo build system
-- **Bun** - Package manager (lock file present)
+- **Next.js 15.2.4** - Full-stack React framework (App Router)
+- **React 19.0** - UI library with Server Components
+- **Bun** - Package manager and runtime
+- **TypeScript 5.9** - Type safety across the stack
 
-### **Frontend** (`apps/web`)
+### **Database & ORM**
 
-- **Next.js 15.2.4** - React framework with App Router
-- **React 19.0.0** - UI library
-- **Tailwind CSS 3.4.3** - Utility-first styling
-- **TypeScript 5.9.2** - Type safety
+- **PostgreSQL** - Primary database (Neon/Supabase)
+- **Prisma 6** - TypeScript-first ORM with migrations
+- **Prisma Studio** - Visual database explorer
 
-### **Backend** (`apps/api`)
+### **Authentication**
 
-- **NestJS 11.0** - Progressive Node.js framework
-- **Express** - HTTP server
-- **TypeScript 5.9.2** - Type safety
+- **NextAuth.js 5** (Auth.js) - Authentication framework
+- **Azure AD Provider** - Microsoft 365 integration
+- **Prisma Adapter** - Database session storage
 
-### **Testing & Quality**
+### **UI & Styling**
 
-- **Jest 30.0** - Unit testing framework
+- **Tailwind CSS 3.4** - Utility-first styling
+- **Radix UI** - Accessible component primitives
+- **Lucide React** - Icon library
+- **Recharts** - Data visualization library
+
+### **Forms & Validation**
+
+- **React Hook Form** - Performant form management
+- **Zod** - TypeScript schema validation
+- **@hookform/resolvers** - Zod integration
+
+### **Export & Integration**
+
+- **ExcelJS** - Excel file generation
+- **date-fns** - Date manipulation utilities
+- **Power BI REST API** - Dataset integration
+
+### **Development Tools**
+
+- **Nx 21.6** - Monorepo management and build system
 - **Playwright** - E2E testing
-- **ESLint 9.8** - Code linting
-- **Prettier 2.6** - Code formatting
-
-### **Build & Development**
-
-- **Webpack** - Module bundler
-- **SWC** - Fast TypeScript/JavaScript compiler
-- **Autoprefixer** - CSS vendor prefixing
+- **Jest** - Unit testing
+- **ESLint** - Code linting
+- **Prettier** - Code formatting
 
 ---
 
 ## **Project Structure**
 
-```lua
+```
 F:\excel\ops/
 ├── apps/
-│   ├── web/              # Next.js frontend application
+│   ├── web/                          # Next.js application (ONLY APP)
 │   │   ├── src/
-│   │   │   └── app/      # App Router pages
-│   │   ├── public/       # Static assets
-│   │   └── specs/        # Unit tests
+│   │   │   ├── app/                  # App Router pages & API routes
+│   │   │   │   ├── page.tsx          # Home page
+│   │   │   │   ├── dashboard/        # Dashboard pages
+│   │   │   │   ├── auth/             # Authentication pages
+│   │   │   │   └── api/              # API routes
+│   │   │   │       ├── auth/         # NextAuth endpoints
+│   │   │   │       ├── materials/    # Material CRUD
+│   │   │   │       ├── operations/   # Operations CRUD
+│   │   │   │       ├── equipment/    # Equipment CRUD
+│   │   │   │       ├── manpower/     # Manpower CRUD
+│   │   │   │       ├── dashboard/    # Dashboard metrics
+│   │   │   │       └── export/       # Export endpoints
+│   │   │   ├── lib/                  # Shared utilities
+│   │   │   │   └── db.ts             # Prisma client
+│   │   │   ├── components/           # React components
+│   │   │   └── middleware.ts         # Auth middleware
+│   │   ├── public/                   # Static assets
+│   │   └── specs/                    # Unit tests
 │   │
-│   ├── web-e2e/          # Frontend E2E tests (Playwright)
-│   │
-│   ├── api/              # NestJS backend application
-│   │   ├── src/
-│   │   │   ├── app/      # Application modules
-│   │   │   └── main.ts   # Entry point (runs on port 3000)
-│   │   └── dist/         # Build output
-│   │
-│   └── api-e2e/          # Backend E2E tests
+│   └── web-e2e/                      # E2E tests (Playwright)
 │
-├── docs/                 # Project documentation
-│   ├── alasla.csv                      # Source data (July 2025)
-│   ├── Excel_Data_Analysis.md          # Data analysis report
-│   ├── schema.sql                      # Database schema
-│   ├── comprehensive-erd-system.md     # Entity relationship diagram
-│   ├── comprehensive-dfd-system.md     # Data flow diagram
-│   └── Comprehensive_DFD_Schema.md     # DFD specifications
+├── prisma/
+│   ├── schema.prisma                 # Database schema
+│   ├── migrations/                   # Database migrations
+│   └── seed.ts                       # Database seeding script
 │
-├── .nx/                  # Nx cache
-├── .vscode/              # VS Code workspace settings
-├── node_modules/         # Dependencies
+├── docs/                             # Project documentation
+│   ├── alasla.csv                    # Source data (July 2025)
+│   ├── Excel_Data_Analysis.md        # Data analysis report
+│   ├── schema.sql                    # Original SQL schema
+│   ├── comprehensive-erd-system.md   # Entity relationship diagram
+│   └── IMPLEMENTATION_GUIDE.md       # Migration guide
 │
-├── nx.json               # Nx workspace configuration
-├── package.json          # Dependencies & workspace config
-├── tsconfig.base.json    # Base TypeScript configuration
-├── jest.config.ts        # Jest test configuration
-└── eslint.config.mjs     # ESLint configuration
+├── .env                              # Environment variables (gitignored)
+├── auth.ts                           # NextAuth configuration
+├── package.json                      # Dependencies & scripts
+├── nx.json                           # Nx workspace config
+└── README.md                         # This file
 ```
+
+---
+
+## **Architecture**
+
+### **Single Application Design**
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                Next.js 15 Full-Stack Application            │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │  Frontend (React Server Components + Client)       │    │
+│  │  ├─ Dashboard (Recharts visualizations)            │    │
+│  │  ├─ Data Entry Forms (React Hook Form + Zod)       │    │
+│  │  ├─ Authentication (NextAuth UI)                   │    │
+│  │  └─ Export UI (Excel, Power BI)                    │    │
+│  └────────────────────────────────────────────────────┘    │
+│                          ↕                                  │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │  API Routes (/app/api/*)                          │    │
+│  │  ├─ /api/auth/[...nextauth] (Azure AD)            │    │
+│  │  ├─ /api/materials (CRUD + calculations)          │    │
+│  │  ├─ /api/operations (CRUD + aggregations)         │    │
+│  │  ├─ /api/equipment (CRUD + utilization)           │    │
+│  │  ├─ /api/manpower (CRUD + attendance)             │    │
+│  │  ├─ /api/dashboard/metrics (real-time data)       │    │
+│  │  ├─ /api/export/excel (file generation)           │    │
+│  │  └─ /api/export/powerbi (dataset endpoint)        │    │
+│  └────────────────────────────────────────────────────┘    │
+│                          ↕                                  │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │  Server Actions (mutations & calculations)         │    │
+│  │  ├─ createMaterialEntry()                          │    │
+│  │  ├─ calculateInventoryBalance()                    │    │
+│  │  ├─ calculateEquipmentUtilization()                │    │
+│  │  └─ updateDailyOperations()                        │    │
+│  └────────────────────────────────────────────────────┘    │
+│                          ↕                                  │
+│  ┌────────────────────────────────────────────────────┐    │
+│  │  Database Layer (Prisma ORM)                       │    │
+│  │  └─ PostgreSQL (Neon/Supabase/Railway)             │    │
+│  └────────────────────────────────────────────────────┘    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### **Why Next.js Only?**
+
+**Scale Reality**: 15-20 users with daily entry patterns means ~100 requests/day. Next.js API routes handle 100,000+ requests/second. A separate NestJS backend would be 1,000x over-engineered.
+
+**Benefits**:
+
+- ✅ **Single Codebase** - One TypeScript project, shared types
+- ✅ **Faster Development** - No API contract synchronization
+- ✅ **Simpler Deployment** - One Vercel deployment vs two services
+- ✅ **Native Azure AD** - NextAuth has first-class Microsoft support
+- ✅ **Server Components** - Direct database access, no API overhead
+- ✅ **Server Actions** - Type-safe mutations without REST boilerplate
 
 ---
 
@@ -102,58 +189,57 @@ F:\excel\ops/
 
 ### **Prerequisites**
 
-Ensure you have installed:
+- **Node.js** 20.x or higher
+- **Bun** package manager ([install](https://bun.sh))
+- **PostgreSQL database** (Neon/Supabase account)
+- **Azure AD App Registration** (for Microsoft 365 auth)
 
-- **Node.js** (version 20.x or higher)
-- **Bun** (package manager used in this project)
-
-### **Installation**
+### **Initial Setup**
 
 ```bash
-# Clone/navigate to project directory
-cd  ops
+# Navigate to project
+cd F:\excel\ops
 
-# Install dependencies (if not already done)
+# Install dependencies
 bun install
+
+# Copy environment template
+cp .env.example .env
+
+# Edit .env with your credentials:
+# - DATABASE_URL (PostgreSQL connection string)
+# - AZURE_AD_CLIENT_ID (from Azure Portal)
+# - AZURE_AD_CLIENT_SECRET (from Azure Portal)
+# - AZURE_AD_TENANT_ID (from Azure Portal)
+# - NEXTAUTH_SECRET (generate with: openssl rand -base64 32)
 ```
 
-### **Development Servers**
-
-#### **Run Frontend (Next.js)**
+### **Database Setup**
 
 ```bash
-# Start web application on http://localhost:4200
-npx nx dev web
+# Generate Prisma Client
+bun run db:generate
+
+# Push schema to database
+bun run db:push
+
+# Seed with initial data (materials, equipment, roles)
+bun run db:seed
+
+# Open Prisma Studio to verify
+bun run db:studio
+# Opens at http://localhost:5555
 ```
 
-#### **Run Backend (NestJS)**
+### **Development**
 
 ```bash
-# Start API server on http://localhost:3000
-npx nx serve api
-```
+# Start development server
+bun run dev
+# Opens at http://localhost:4200
 
-#### **Run Both Simultaneously**
-
-```bash
-# Terminal 1 - Frontend
-npx nx dev web
-
-# Terminal 2 - Backend
-npx nx serve api
-```
-
-### **Production Builds**
-
-```bash
-# Build frontend
-npx nx build web
-
-# Build backend
-npx nx build api
-
-# Build all projects
-npx nx run-many -t build
+# In a new terminal, open database GUI
+bun run db:studio
 ```
 
 ---
@@ -163,325 +249,438 @@ npx nx run-many -t build
 ### **Development**
 
 ```bash
-# Start development server for web app
-npx nx dev web
-
-# Start development server for API
-npx nx serve api
-
-# Run tests for a specific project
-npx nx test web
-npx nx test api
-
-# Run E2E tests
-npx nx e2e web-e2e
-npx nx e2e api-e2e
-
-# Lint code
-npx nx lint web
-npx nx lint api
+bun run dev                    # Start Next.js dev server (port 4200)
+bun run build                  # Build for production
+bun run start                  # Start production server
+bun run test                   # Run unit tests
+bun run lint                   # Run ESLint
 ```
 
-### **Project Management**
+### **Database**
 
 ```bash
-# View project details
-npx nx show project web
-npx nx show project api
-
-# View project dependency graph (interactive)
-npx nx graph
-
-# List all projects
-npx nx show projects
-
-# See what's affected by recent changes
-npx nx affected:graph
-npx nx affected:test
+bun run db:generate            # Generate Prisma Client from schema
+bun run db:push                # Push schema changes to database
+bun run db:migrate             # Create new migration
+bun run db:studio              # Open Prisma Studio (database GUI)
+bun run db:seed                # Seed database with initial data
 ```
 
-### **Code Generation**
+### **Nx Workspace**
 
 ```bash
-# Generate a new React component
-npx nx g @nx/next:component components/my-component --project=web
-
-# Generate a new NestJS controller
-npx nx g @nx/nest:controller my-controller --project=api
-
-# Generate a new NestJS service
-npx nx g @nx/nest:service my-service --project=api
-
-# Generate a new shared library
-npx nx g @nx/react:lib shared-ui
+bunx nx graph                  # View interactive project graph
+bunx nx show project web       # Show web project details
+bunx nx affected:test          # Test only affected projects
+bunx nx reset                  # Clear Nx cache
 ```
 
 ---
 
-## **Current Application Status**
+## **Authentication Setup**
 
-### **Frontend (`apps/web`)**
+### **Azure AD App Registration**
 
-- ✅ Next.js App Router configured
-- ✅ Tailwind CSS styling ready
-- ✅ Default welcome page active
-- ⏳ Excel data integration pending
-- ⏳ Dashboard UI pending
-- ⏳ Data visualization pending
+1. **Go to**: [Azure Portal](https://portal.azure.com) → Azure Active Directory → App registrations
+2. **Create**: New registration
+   - Name: "ALASLA Operations Dashboard"
+   - Account types: Single tenant
+   - Redirect URI: `http://localhost:4200/api/auth/callback/azure-ad`
+3. **Configure**:
+   - API Permissions → Add → Microsoft Graph → Delegated → `User.Read`, `email`, `openid`, `profile`
+   - Grant admin consent
+4. **Create Secret**:
+   - Certificates & secrets → New client secret
+   - Copy the **Value** (shown only once!)
+5. **Get IDs**:
+   - Overview page → Copy **Application (client) ID** and **Directory (tenant) ID**
 
-**Current Page**: <http://localhost:4200>
-**Status**: Default Nx welcome screen
+### **Environment Configuration**
 
-### **Backend (`apps/api`)**
+Update `.env`:
 
-- ✅ NestJS application bootstrapped
-- ✅ Basic app module/controller/service scaffolded
-- ✅ Global API prefix: `/api`
-- ⏳ Database connection pending
-- ⏳ Data models pending
-- ⏳ REST endpoints pending
+```env
+DATABASE_URL="postgresql://user:pass@host:5432/db"
+NEXTAUTH_URL="http://localhost:4200"
+NEXTAUTH_SECRET="your-generated-secret"
+AZURE_AD_CLIENT_ID="your-client-id"
+AZURE_AD_CLIENT_SECRET="your-client-secret"
+AZURE_AD_TENANT_ID="your-tenant-id"
+```
 
-**Current Endpoint**: <http://localhost:3000/api>
-**Status**: Default welcome endpoint
+### **Domain Restriction**
 
-### **Documentation**
+The authentication is configured to **only allow @sirc.sa email addresses**. This is enforced in `auth.ts`:
 
-- ✅ Excel data analysis completed (see `docs/Excel_Data_Analysis.md`)
-- ✅ Database schema designed (`docs/schema.sql`)
-- ✅ ERD diagrams created
-- ✅ DFD specifications documented
+```typescript
+async signIn({ user }) {
+  if (!user.email?.endsWith('@sirc.sa')) {
+    return false // Reject non-@sirc.sa accounts
+  }
+  return true
+}
+```
 
 ---
 
-## **Next Steps (Development Roadmap)**
+## **Database Schema**
 
-### **Phase 1: Database Setup** 🎯 *Start Here*
+### **Core Entities**
 
-```bash
-# 1. Choose database system (PostgreSQL recommended)
-# 2. Install database dependencies
-bun add @nestjs/typeorm typeorm pg
+| Entity | Purpose | Key Fields |
+|--------|---------|------------|
+| **Material** | Aggregate types, materials | name, size, category |
+| **Equipment** | Crushers, loaders, vehicles | name, type |
+| **ManpowerRole** | Worker roles and codes | modelcode, name |
+| **OperationMetric** | Operations KPIs | code, name, unit |
 
-# 3. Apply schema from docs/schema.sql
-# 4. Configure database connection in api/src/app/app.module.ts
+### **Daily Fact Tables**
+
+| Entity | Purpose | Unique Constraint |
+|--------|---------|-------------------|
+| **DailyProduction** | Material produced per day | (date, materialId) |
+| **DailyDispatched** | Material dispatched per day | (date, materialId) |
+| **DailyEquipmentUsage** | Equipment hours per day | (date, equipmentId) |
+| **DailyManpower** | Workforce count per day | (date, roleId) |
+| **DailyOperation** | Operational metrics per day | (date, metricId) |
+
+### **Calculated Metrics**
+
+```typescript
+// Example: Inventory Balance
+inventoryBalance =
+  (previous day balance) +
+  (today's production) -
+  (today's dispatch)
+
+// Example: Equipment Utilization
+utilizationRate =
+  (actual hours / (days × 24 hours)) × 100
 ```
-
-### **Phase 2: Backend Development**
-
-```bash
-# 1. Create data entities (TypeORM models)
-npx nx g @nx/nest:class entities/material --project=api
-npx nx g @nx/nest:class entities/operation --project=api
-npx nx g @nx/nest:class entities/equipment --project=api
-
-# 2. Create service layer
-npx nx g @nx/nest:service services/material --project=api
-npx nx g @nx/nest:service services/operation --project=api
-
-# 3. Create REST controllers
-npx nx g @nx/nest:controller controllers/material --project=api
-npx nx g @nx/nest:controller controllers/operation --project=api
-
-# 4. Import CSV data from docs/alasla.csv
-```
-
-### **Phase 3: Frontend Development**
-
-```bash
-# 1. Create dashboard layout
-npx nx g @nx/next:component components/dashboard-layout --project=web
-
-# 2. Create data visualization components
-npx nx g @nx/next:component components/material-chart --project=web
-npx nx g @nx/next:component components/equipment-status --project=web
-npx nx g @nx/next:component components/production-metrics --project=web
-
-# 3. Add charting library
-bun add recharts
-
-# 4. Connect to API endpoints
-```
-
-### **Phase 4: Integration & Testing**
-
-- Connect frontend to backend API
-- Implement real-time data updates
-- Add error handling and loading states
-- Write unit and E2E tests
-- Performance optimization
 
 ---
 
-## **Why Next.js AND NestJS?**
+## **Excel Mathematical Calculations**
 
-Good question! Here's the rationale for this small project:
+All Excel formulas are replicated as TypeScript functions:
 
-### **Next.js (Frontend)**
+### **Inventory Balance**
 
-- **Server Components**: Efficient data fetching
-- **App Router**: Modern routing with layouts
-- **Built-in API Routes**: Could handle simple APIs alone
+```typescript
+// Replicates: =SUM(Production) - SUM(Dispatch) + PreviousBalance
+async function calculateInventoryBalance(materialId, date) {
+  const previous = await getPreviousBalance(materialId, date)
+  const production = await getProduction(materialId, date)
+  const dispatch = await getDispatch(materialId, date)
+  return previous + production - dispatch
+}
+```
 
-### **NestJS (Backend)**
+### **Equipment Utilization**
 
-- **Structured Architecture**: Scalable as project grows
-- **TypeScript First**: Type safety across stack
-- **Database Integration**: TypeORM, Prisma support out-of-box
-- **Dependency Injection**: Clean, testable code
-- **Swagger/OpenAPI**: Automatic API documentation
+```typescript
+// Replicates: =(Hours / (Days × 24)) × 100
+async function calculateUtilization(equipmentId, dateRange) {
+  const totalHours = await getTotalHours(equipmentId, dateRange)
+  const totalDays = getDaysBetween(dateRange.start, dateRange.end)
+  return (totalHours / (totalDays * 24)) * 100
+}
+```
 
-**Decision**: While Next.js alone could handle this, NestJS provides:
+### **Material Flow**
 
-1. **Separation of Concerns** - Clear frontend/backend boundary
-2. **Database Optimization** - Dedicated layer for data operations
-3. **Future Scalability** - Easy to add features (auth, real-time, jobs)
-4. **Team Collaboration** - Frontend/backend developers can work independently
+```typescript
+// Replicates: Production vs Dispatch comparison
+async function analyzeFlow(materialId, dateRange) {
+  const production = await getTotalProduction(materialId, dateRange)
+  const dispatch = await getTotalDispatch(materialId, dateRange)
+  return {
+    production,
+    dispatch,
+    balance: production - dispatch,
+    status: production < dispatch ? 'over-dispatch' : 'under-dispatch'
+  }
+}
+```
 
 ---
 
-## **Data Source Information**
+## **Export Capabilities**
+
+### **1. Excel Export**
+
+**Endpoint**: `GET /api/export/excel?start=2025-07-01&end=2025-07-31`
+
+Generates `.xlsx` file with:
+
+- Production Report sheet
+- Dispatch Report sheet
+- Equipment Usage sheet
+- Manpower Attendance sheet
+- Inventory Balance sheet (with formulas)
+
+**Technology**: ExcelJS library
+
+### **2. Power BI Integration**
+
+**Endpoint**: `GET /api/export/powerbi?start=2025-07-01&end=2025-07-31`
+
+Returns JSON dataset compatible with Power BI:
+
+```json
+{
+  "date": "2025-07-15",
+  "material_name": "Aggregate 3/4\"",
+  "production": 250.5,
+  "dispatch": 220.0,
+  "balance": 30.5
+}
+```
+
+**Setup in Power BI**:
+
+1. Get Data → Web
+2. Enter API URL with authentication
+3. Transform as needed
+4. Schedule daily refresh
+
+### **3. Web Dashboard**
+
+Real-time interactive dashboard with:
+
+- Line charts (production trends)
+- Bar charts (equipment comparison)
+- Pie charts (material distribution)
+- KPI cards (daily totals)
+- Date range filtering
+
+---
+
+## **Data Source**
 
 **File**: `docs/alasla.csv`
 **Period**: July 1-31, 2025
 **Site**: ALASLA Construction Site
+**Format**: Consolidated CSV with daily operations
 
-**Data Categories**:
+### **Data Categories**
 
-1. **Dispatched Materials** - 15 material types, 34,770 total tons
-2. **Equipment Operations** - 9 equipment types, 1,704 operational hours
-3. **Manpower Resources** - 5 workforce categories, 344 total personnel
-4. **Production Metrics** - 18 materials produced, 54,240 tons output
-5. **Operations Data** - Truck acceptance, segregation operations
+1. **Dispatched Materials** (15 types)
+   - Total: 34,770 tons
+   - Top: Aggregate 3/4" (8,195 tons)
 
-**Key Insights** (from analysis):
+2. **Equipment Operations** (9 units)
+   - Total: 1,704 operational hours
+   - Highest: Front Loaders (510 hrs)
 
-- Over-dispatch detected in Aggregate 3/4" (-355.4 tons)
-- Under-utilization in Subbase (+5,219.5 tons inventory)
-- High equipment usage: Front loaders (510 hrs), Dumpers (510 hrs)
-- Workforce: 156 maintenance, 154 drivers, 26 operators
+3. **Manpower Resources** (5 roles)
+   - Total: 344 personnel-days
+   - Largest: Maintenance (156)
 
-See `docs/Excel_Data_Analysis.md` for complete analysis report.
+4. **Production Metrics** (18 materials)
+   - Total: 54,240 tons produced
+   - Top: Sand (11,340 tons)
+
+See `docs/Excel_Data_Analysis.md` for complete analysis.
+
+---
+
+## **Development Roadmap**
+
+### **✅ Phase 1: Foundation** (Current)
+
+- [x] Project setup with Nx + Next.js
+- [x] Database schema design
+- [x] Authentication architecture
+- [x] Documentation
+
+### **🔄 Phase 2: Backend & Auth** (In Progress)
+
+- [ ] Prisma schema migration
+- [ ] Azure AD authentication setup
+- [ ] Database seeding with CSV data
+- [ ] API route structure
+
+### **📋 Phase 3: Data Entry** (Next)
+
+- [ ] Material production forms
+- [ ] Dispatch entry forms
+- [ ] Equipment usage forms
+- [ ] Manpower attendance forms
+
+### **📊 Phase 4: Dashboard** (Planned)
+
+- [ ] Real-time metrics cards
+- [ ] Production trend charts
+- [ ] Equipment utilization visualization
+- [ ] Inventory balance tracking
+
+### **📤 Phase 5: Export** (Planned)
+
+- [ ] Excel export functionality
+- [ ] Power BI dataset API
+- [ ] Report generation UI
+
+### **🚀 Phase 6: Deployment** (Planned)
+
+- [ ] Vercel deployment
+- [ ] Production database setup
+- [ ] Azure AD production configuration
+- [ ] User acceptance testing
+
+---
+
+## **Deployment**
+
+### **Recommended: Vercel**
+
+```bash
+# Install Vercel CLI
+bun add -g vercel
+
+# Deploy to preview
+bunx vercel
+
+# Deploy to production
+bunx vercel --prod
+```
+
+**Environment Variables** (set in Vercel dashboard):
+
+- `DATABASE_URL` - PostgreSQL connection string
+- `NEXTAUTH_URL` - Production URL (<https://your-app.vercel.app>)
+- `NEXTAUTH_SECRET` - Same as local
+- `AZURE_AD_CLIENT_ID` - Same as local
+- `AZURE_AD_CLIENT_SECRET` - Same as local
+- `AZURE_AD_TENANT_ID` - Same as local
+
+**Don't forget**: Add production redirect URI to Azure AD app registration:
+`https://your-app.vercel.app/api/auth/callback/azure-ad`
 
 ---
 
 ## **Useful Resources**
 
-### **Nx Documentation**
-
-- [Nx Documentation](https://nx.dev)
-- [Next.js Plugin](https://nx.dev/nx-api/next)
-- [NestJS Plugin](https://nx.dev/nx-api/nest)
-- [Nx Console (VS Code)](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console)
-
-### **Framework Documentation**
+### **Documentation**
 
 - [Next.js 15 Docs](https://nextjs.org/docs)
-- [NestJS Docs](https://docs.nestjs.com)
-- [React 19 Docs](https://react.dev)
-- [Tailwind CSS](https://tailwindcss.com/docs)
+- [Prisma Docs](https://www.prisma.io/docs)
+- [NextAuth.js Docs](https://authjs.dev)
+- [Nx Next.js Plugin](https://nx.dev/nx-api/next)
+- [Recharts Docs](https://recharts.org)
 
-### **Project-Specific Docs**
+### **Project-Specific**
 
-- `docs/Excel_Data_Analysis.md` - Data analysis report
-- `docs/schema.sql` - Database schema
+- `docs/IMPLEMENTATION_GUIDE.md` - Step-by-step migration guide
+- `docs/Excel_Data_Analysis.md` - Data analysis and requirements
+- `docs/schema.sql` - Original SQL schema
 - `docs/comprehensive-erd-system.md` - Entity relationships
-- `docs/comprehensive-dfd-system.md` - Data flow diagrams
 
----
+### **Tools**
 
-## **Development Tips**
-
-### **Nx Performance**
-
-```bash
-# Use computation caching
-npx nx connect  # Connect to Nx Cloud (optional)
-
-# Run tasks in parallel
-npx nx run-many -t test --parallel=3
-
-# Clear Nx cache if needed
-npx nx reset
-```
-
-### **IDE Setup**
-
-- Install **Nx Console** extension for VS Code
-- Configurations already present in `.vscode/` folder
-- Use `npx nx show project <name>` to explore project structure
-
-### **Debugging**
-
-- Frontend: Next.js dev server includes React DevTools
-- Backend: NestJS logs available in terminal
-- Use VS Code debugging configurations (if configured)
+- [Prisma Studio](http://localhost:5555) - Database GUI (when running)
+- [Nx Console](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console) - VS Code extension
+- [Azure Portal](https://portal.azure.com) - Azure AD management
 
 ---
 
 ## **Troubleshooting**
 
-### **Port Conflicts**
+### **Authentication Issues**
+
+**Symptom**: Can't sign in with Microsoft account
+
+**Solutions**:
+
+1. Verify all Azure AD credentials in `.env`
+2. Check redirect URI matches exactly in Azure Portal
+3. Ensure @sirc.sa domain restriction is correct
+4. Check browser console for detailed errors
+5. Verify database tables (users, accounts) exist
+
+### **Database Connection Failed**
+
+**Symptom**: `PrismaClientInitializationError`
+
+**Solutions**:
 
 ```bash
-# If port 3000 (API) or 4200 (Web) is in use:
+# Verify connection string
+echo $DATABASE_URL
 
-# Check process using port
-netstat -ano | findstr :3000
+# Test connection
+bunx prisma db push
+
+# Regenerate client
+bunx prisma generate
+
+# Check database is running (Neon/Supabase dashboard)
+```
+
+### **Port Already in Use**
+
+**Symptom**: `Error: listen EADDRINUSE: address already in use :::4200`
+
+**Solutions**:
+
+```bash
+# Find process using port 4200
 netstat -ano | findstr :4200
 
-# Kill process (Windows)
-taskkill /PID <process_id> /F
+# Kill process (replace PID)
+taskkill /PID <process-id> /F
 
-# Or change port in configuration
+# Or change port in apps/web/project.json
 ```
 
-### **Dependency Issues**
+### **Module Not Found**
+
+**Symptom**: `Cannot find module '@prisma/client'`
+
+**Solutions**:
 
 ```bash
-# Clear node_modules and reinstall
-rm -rf node_modules
+# Install dependencies
 bun install
 
-# Clear Nx cache
-npx nx reset
-```
+# Generate Prisma Client
+bunx prisma generate
 
-### **Build Errors**
-
-```bash
-# Check TypeScript errors
-npx nx run-many -t typecheck
-
-# Check for lint issues
-npx nx run-many -t lint
+# Clear cache and reinstall
+rm -rf node_modules bun.lock
+bun install
 ```
 
 ---
 
 ## **Contributing**
 
-This project follows Nx workspace conventions:
+This project follows these standards:
 
-1. **Code Style**: ESLint + Prettier configured
-2. **Testing**: Jest for unit tests, Playwright for E2E
-3. **Type Safety**: TypeScript strict mode enabled
-4. **Commit Standards**: Consider conventional commits
+- **Code Style**: ESLint + Prettier enforced
+- **Type Safety**: Strict TypeScript mode
+- **Testing**: Jest for units, Playwright for E2E
+- **Commits**: Conventional commits recommended
+- **Branches**: Feature branches, PR review before merge
 
 ---
 
 ## **License**
 
-MIT License - See project root for details
+MIT License - See LICENSE file for details
 
 ---
 
 ## **Support**
 
-- **Nx Issues**: [GitHub Issues](https://github.com/nrwl/nx/issues)
-- **Next.js Issues**: [GitHub Issues](https://github.com/vercel/next.js/issues)
-- **NestJS Issues**: [GitHub Issues](https://github.com/nestjs/nest/issues)
+- **Project Issues**: Create issue in repository
+- **Nx Questions**: [Nx Documentation](https://nx.dev)
+- **Next.js Questions**: [Next.js Discussions](https://github.com/vercel/next.js/discussions)
+- **Prisma Questions**: [Prisma Discussions](https://github.com/prisma/prisma/discussions)
+- **Azure AD Setup**: [Microsoft Docs](https://docs.microsoft.com/azure/active-directory/)
 
 ---
 
-**Project Status**: 🟡 Initial Setup Complete - Development Ready
+**Project Status**: 🟡 Setup Phase - Database & Authentication Configuration
+**Next Steps**: See `docs/IMPLEMENTATION_GUIDE.md` for detailed migration steps
 **Last Updated**: October 5, 2025
