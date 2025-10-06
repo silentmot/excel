@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Report: Standardized Material Taxonomy & Classification System</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11.9.0/dist/mermaid.min.js"></script>
+
+    <style>
+      /* * =====================================================================
+       * CSS Variables & Theming
+       * =====================================================================
+      */
+      :root {
+        /* Typography */
+        --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+
+        /* Spacing Scale (8px grid) */
+        --space-1: 0.5rem;  /* 8px */
+        --space-2: 1rem;    /* 16px */
+        --space-3: 1.5rem;  /* 24px */
+        --space-4: 2rem;    /* 32px */
+        --space-5: 3rem;    /* 48px */
+        --space-6: 4rem;    /* 64px */
+
+        /* Border Radius */
+        --radius-sm: 4px;
+        --radius-md: 8px;
+        --radius-lg: 16px;
+
+        /* Light Theme */
+        --color-bg: #f8f9fa;
+        --color-bg-alt: #ffffff;
+        --color-bg-tertiary: #e9ecef;
+        --color-fg: #1a202c;
+        --color-fg-muted: #718096;
+        --color-border: #cbd5e0;
+        --color-accent: #3182ce;
+        --color-accent-hover: #2c5282;
+        --color-accent-fg: #ffffff;
+        --color-code-bg: #edf2f7;
+        --color-shadow: rgba(0, 0, 0, 0.1);
+        --color-shadow-lg: rgba(0, 0, 0, 0.15);
+        --color-header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --color-nav-bg: #ffffff;
+        --color-nav-border: #e2e8f0;
+        --color-table-header: #f7fafc;
+        --color-table-hover: #edf2f7;
+        --color-mermaid-bg: #f7fafc;
+        --color-mermaid-border: #cbd5e0;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          /* Dark Theme */
+          --color-bg: #1a202c;
+          --color-bg-alt: #2d3748;
+          --color-bg-tertiary: #4a5568;
+          --color-fg: #f7fafc;
+          --color-fg-muted: #a0aec0;
+          --color-border: #4a5568;
+          --color-accent: #63b3ed;
+          --color-accent-hover: #4299e1;
+          --color-accent-fg: #1a202c;
+          --color-code-bg: #2d3748;
+          --color-shadow: rgba(0, 0, 0, 0.3);
+          --color-shadow-lg: rgba(0, 0, 0, 0.5);
+          --color-header-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          --color-nav-bg: #2d3748;
+          --color-nav-border: #4a5568;
+          --color-table-header: #2d3748;
+          --color-table-hover: #4a5568;
+          --color-mermaid-bg: #2d3748;
+          --color-mermaid-border: #4a5568;
+        }
+      }
+
+      /* * =====================================================================
+       * Base & Reset Styles
+       * =====================================================================
+      */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        font-size: 16px;
+        line-height: 1.7;
+        color: var(--color-fg);
+        background: var(--color-bg);
+        background-image:
+          radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 80% 80%, rgba(118, 75, 162, 0.05) 0%, transparent 50%);
+        background-attachment: fixed;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        min-height: 100vh;
+      }
+
+      /* * =====================================================================
+       * Accessibility
+       * =====================================================================
+      */
+      .skip-to-content {
+        position: absolute;
+        left: -9999px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        z-index: -999;
+      }
+
+      .skip-to-content:focus {
+        position: fixed;
+        top: var(--space-2);
+        left: var(--space-2);
+        width: auto;
+        height: auto;
+        padding: var(--space-1) var(--space-2);
+        background-color: var(--color-accent);
+        color: var(--color-accent-fg);
+        border-radius: var(--radius-sm);
+        z-index: 1000;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 2px;
+        border-radius: var(--radius-sm);
+      }
+
+      /* * =====================================================================
+       * Layout
+       * =====================================================================
+      */
+      .page-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-4);
+        margin: 0 auto;
+        padding: var(--space-4) var(--space-2);
+      }
+
+      @media (min-width: 1024px) {
+        .page-wrapper {
+          margin-left: 280px; /* Account for fixed sidebar */
+          margin-right: var(--space-4);
+          max-width: none; /* Allow full width */
+          padding: var(--space-5) var(--space-4);
+        }
+      }
+
+      .page-header {
+        background: var(--color-header-bg);
+        color: white;
+        padding: var(--space-5) var(--space-4);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 8px 24px var(--color-shadow-lg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        pointer-events: none;
+      }
+
+      .page-header h1 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        color: white;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      }
+
+      .page-footer {
+        text-align: center;
+        margin-top: var(--space-5);
+        padding: var(--space-4);
+        background: var(--color-bg-alt);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--color-border);
+        box-shadow: 0 2px 8px var(--color-shadow);
+        font-style: italic;
+        width: 100%;
+      }
+
+      .page-footer p {
+        color: var(--color-fg-muted);
+        margin: 0 auto;
+        font-size: 0.95rem;
+        text-align: center;
+      }
+
+      /* Table of Contents / Aside */
+      .toc-aside {
+        display: none; /* Hidden on mobile */
+      }
+
+      @media (min-width: 1024px) {
+        .toc-aside {
+          display: block;
+          position: fixed;
+          left: var(--space-4);
+          top: var(--space-4);
+          width: 240px;
+          height: calc(100vh - 2 * var(--space-4));
+          overflow-y: auto;
+          background: var(--color-nav-bg);
+          border-radius: var(--radius-lg);
+          padding: var(--space-3);
+          box-shadow: 0 4px 16px var(--color-shadow);
+          border: 1px solid var(--color-nav-border);
+          z-index: 100;
+        }
+
+        .toc-aside::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .toc-aside::-webkit-scrollbar-track {
+          background: transparent;
+        }
+
+        .toc-aside::-webkit-scrollbar-thumb {
+          background: var(--color-border);
+          border-radius: 3px;
+        }
+
+        .toc-aside::-webkit-scrollbar-thumb:hover {
+          background: var(--color-fg-muted);
+        }
+      }
+
+      .toc-nav h2 {
+          font-size: 0.875rem;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: var(--color-fg);
+          margin-bottom: var(--space-2);
+          padding-bottom: var(--space-1);
+          border-bottom: 2px solid var(--color-accent);
+      }
+
+      .toc-nav ul {
+        list-style: none;
+      }
+
+      .toc-nav a {
+        display: block;
+        padding: 0.5rem var(--space-2);
+        color: var(--color-fg-muted);
+        text-decoration: none;
+        border-left: 3px solid transparent;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        font-size: 0.9rem;
+        border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+        margin: 2px 0;
+      }
+
+      .toc-nav a:hover {
+        color: var(--color-accent);
+        border-left-color: var(--color-accent);
+        background-color: var(--color-bg-tertiary);
+        transform: translateX(4px);
+      }
+
+      .toc-nav a.active {
+        color: var(--color-accent);
+        font-weight: 600;
+        border-left-color: var(--color-accent);
+        background: linear-gradient(90deg, var(--color-bg-tertiary) 0%, transparent 100%);
+        transform: translateX(6px);
+      }
+
+      .toc-nav .toc-level-3 {
+          padding-left: var(--space-3);
+          font-size: 0.85rem;
+      }
+
+      /* Main Content Area */
+      main {
+        min-width: 0; /* Prevents overflow issues in grid children */
+        background: var(--color-bg-alt);
+        padding: var(--space-4);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 16px var(--color-shadow);
+        border: 1px solid var(--color-border);
+      }
+
+      main > section:not(:last-child) {
+        margin-bottom: var(--space-5);
+        padding-bottom: var(--space-4);
+        border-bottom: 2px dashed var(--color-border);
+      }
+
+      main > section {
+        scroll-margin-top: var(--space-4);
+      }
+
+      /* * =====================================================================
+       * Content Typography & Elements
+       * =====================================================================
+      */
+      h1, h2, h3, h4, h5, h6 {
+        line-height: 1.3;
+        font-weight: 700;
+        margin-bottom: var(--space-2);
+      }
+
+      h1 {
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        font-weight: 800;
+        color: var(--color-fg);
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        margin-top: var(--space-4);
+        padding-bottom: var(--space-2);
+        border-bottom: 3px solid var(--color-accent);
+        position: relative;
+        color: var(--color-fg);
+      }
+
+      h2::after {
+        content: '';
+        position: absolute;
+        bottom: -3px;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      h2:hover::after {
+        width: 100%;
+      }
+
+      h3 {
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        margin-top: var(--space-3);
+        color: var(--color-accent);
+        position: relative;
+        padding-left: var(--space-2);
+      }
+
+      h3::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 4px;
+        height: 70%;
+        background: var(--color-accent);
+        border-radius: 2px;
+      }
+
+      p, ul, ol, pre, blockquote {
+        margin-bottom: var(--space-2);
+      }
+
+      .table-wrapper {
+        margin-bottom: var(--space-2);
+        max-width: 100%; /* Take full width */
+      }
+
+      ul, ol {
+        padding-left: var(--space-3);
+      }
+
+      li {
+        margin-bottom: var(--space-1);
+      }
+
+      a {
+        color: var(--color-accent);
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      hr {
+        display: none; /* Sections provide better semantic separation */
+      }
+
+      strong {
+        font-weight: 700;
+      }
+
+      /* * =====================================================================
+       * Component Styles
+       * =====================================================================
+      */
+
+      /* Tables */
+      .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: 0 4px 16px var(--color-shadow);
+        background: var(--color-bg-alt);
+        margin: var(--space-3) 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        white-space: nowrap;
+      }
+
+      th, td {
+        padding: var(--space-2) var(--space-3);
+        text-align: center;
+        border-bottom: 1px solid var(--color-border);
+      }
+
+      thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+
+      thead th {
+        background: linear-gradient(180deg, var(--color-table-header) 0%, var(--color-bg-alt) 100%);
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--color-fg);
+        border-bottom: 2px solid var(--color-accent);
+        position: relative;
+      }
+
+      thead th::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--color-accent) 0%, transparent 100%);
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: var(--color-bg-tertiary);
+      }
+
+      tbody td {
+        font-size: 0.95rem;
+      }
+
+      tbody td:first-child {
+        font-weight: 600;
+        color: var(--color-accent);
+      }
+
+      .table-wrapper::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .table-wrapper::-webkit-scrollbar-track {
+        background: var(--color-bg-tertiary);
+        border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      }
+
+      .table-wrapper::-webkit-scrollbar-thumb {
+        background: var(--color-border);
+        border-radius: 4px;
+      }
+
+      .table-wrapper::-webkit-scrollbar-thumb:hover {
+        background: var(--color-fg-muted);
+      }
+
+      /* Code Blocks */
+      pre {
+        background-color: var(--color-code-bg);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: var(--space-2);
+        overflow-x: auto;
+        font-size: 0.9em;
+        line-height: 1.5;
+      }
+
+      code {
+        font-family: var(--font-mono);
+        color: var(--color-fg);
+      }
+
+      pre code {
+        padding: 0;
+        background: none;
+        border: none;
+      }
+
+      /* Syntax Highlighting from Original (Adapted) */
+      .token.function { color: #795da3; }
+      .token.punctuation { color: #333; }
+      .token.operator { color: #a71d5d; }
+      .token.number { color: #0086b3; }
+      .token.string { color: #183691; }
+      @media (prefers-color-scheme: dark) {
+        .token.function { color: #c3a6ff; }
+        .token.punctuation { color: #ecf0f1; }
+        .token.operator { color: #f08d8d; }
+        .token.number { color: #72c5ff; }
+        .token.string { color: #91b2ff; }
+      }
+
+      /* Mermaid Diagram */
+      .mermaid {
+        margin: var(--space-4) 0;
+        padding: var(--space-4);
+        background: var(--color-mermaid-bg);
+        border: 2px solid var(--color-mermaid-border);
+        border-radius: var(--radius-lg);
+        text-align: center;
+        box-shadow: 0 8px 24px var(--color-shadow-lg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mermaid::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(102, 126, 234, 0.08) 0%, transparent 70%);
+        animation: rotate 20s linear infinite;
+        pointer-events: none;
+      }
+
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+
+      .mermaid svg {
+        max-width: 100%;
+        height: auto;
+        filter: drop-shadow(0 4px 8px var(--color-shadow));
+        position: relative;
+        z-index: 1;
+      }
+
+      .mermaid .node rect,
+      .mermaid .node circle,
+      .mermaid .node ellipse,
+      .mermaid .node polygon {
+        filter: drop-shadow(0 2px 4px var(--color-shadow));
+      }
+
+      article:has(.mermaid) {
+        background: linear-gradient(135deg, transparent 0%, var(--color-bg-tertiary) 100%);
+        padding: var(--space-3);
+        border-radius: var(--radius-lg);
+        margin: var(--space-3) 0;
+      }
+
+      /* Export Button */
+      .export-button {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-1);
+        padding: var(--space-2) var(--space-4);
+        margin-top: var(--space-3);
+        background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-hover) 100%);
+        color: var(--color-accent-fg);
+        border: none;
+        border-radius: var(--radius-lg);
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .export-button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: translate(-50%, -50%);
+        transition: width 0.6s, height 0.6s;
+      }
+
+      .export-button:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      .export-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(49, 130, 206, 0.4);
+      }
+
+      .export-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 8px rgba(49, 130, 206, 0.3);
+      }
+
+      .export-button svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        position: relative;
+        z-index: 1;
+      }
+
+      .export-button span {
+        position: relative;
+        z-index: 1;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        .export-button {
+          box-shadow: 0 4px 12px rgba(99, 179, 237, 0.3);
+        }
+
+        .export-button:hover {
+          box-shadow: 0 6px 20px rgba(99, 179, 237, 0.4);
+        }
+      }
+
+      /* Print styles for PDF export */
+      @media print {
+        @page {
+          size: A4 landscape;
+          margin: 1.5cm;
+        }
+
+        body {
+          background: white;
+          background-image: none;
+          font-size: 10pt;
+        }
+
+        .page-wrapper {
+          margin: 0;
+          padding: 0;
+          max-width: 100%;
+        }
+
+        .toc-aside,
+        .skip-to-content,
+        .export-button {
+          display: none !important;
+        }
+
+        main {
+          box-shadow: none;
+          border: none;
+          padding: 10px;
+        }
+
+        .page-header {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+          page-break-after: avoid;
+          padding: 1.5rem 1rem;
+          margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+          font-size: 1.5rem;
+        }
+
+        .page-footer {
+          page-break-before: avoid;
+          padding: 1rem;
+          margin-top: 1rem;
+        }
+
+        section {
+          page-break-inside: avoid;
+          margin-bottom: 1rem;
+        }
+
+        h2 {
+          font-size: 1.2rem;
+          margin-top: 1rem;
+          page-break-after: avoid;
+        }
+
+        h3 {
+          font-size: 1rem;
+          page-break-after: avoid;
+        }
+
+        p, ul, ol {
+          font-size: 9pt;
+          line-height: 1.4;
+        }
+
+        /* Table responsive adjustments for print */
+        .table-wrapper {
+          box-shadow: none;
+          overflow: visible;
+          page-break-inside: avoid;
+          margin: 0.5rem 0;
+        }
+
+        table {
+          width: 100%;
+          page-break-inside: avoid;
+          font-size: 8pt;
+          border-collapse: collapse;
+        }
+
+        th {
+          padding: 0.4rem 0.3rem;
+          font-size: 7pt;
+          white-space: normal;
+          word-wrap: break-word;
+        }
+
+        td {
+          padding: 0.4rem 0.3rem;
+          font-size: 8pt;
+          white-space: normal;
+          word-wrap: break-word;
+        }
+
+        /* Adjust specific columns for better fit */
+        th:first-child,
+        td:first-child {
+          width: 12%;
+        }
+
+        th:nth-child(2),
+        td:nth-child(2) {
+          width: 15%;
+        }
+
+        /* Make sure long text wraps */
+        td {
+          max-width: 150px;
+          overflow-wrap: break-word;
+          word-break: break-word;
+        }
+
+        .mermaid {
+          page-break-inside: avoid;
+          transform: scale(0.85);
+          transform-origin: top left;
+        }
+
+        pre {
+          font-size: 7pt;
+          padding: 0.5rem;
+          page-break-inside: avoid;
+        }
+
+        article:has(.mermaid) {
+          page-break-inside: avoid;
+        }
+
+        /* Preserve colors in print */
+        * {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+      }
+    </style>
+</head>
+
+<body>
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+    <div class="page-wrapper">
+      <header class="page-header">
+        <h1 id="technical-report-standardized-material-taxonomy--classification-system">Technical Report: Standardized Material Taxonomy &amp; Classification System</h1>
+      </header>
+
+      <aside class="toc-aside" aria-label="Table of Contents">
+        <nav id="toc-nav" class="toc-nav"></nav>
+      </aside>
+
+      <main id="main-content">
+        <section aria-labelledby="intro">
+            <p>This report establishes a Single Source of Truth (SSOT) for material classification and naming conventions in the construction and demolition recycling facility operations management system. It is based solely on analysis of provided CSV sources and related documentation, ensuring consistency in material identifiers for database implementation and data handling.</p>
+            <p><strong>Sources</strong>:</p>
+            <ul>
+                <li><code>docs/csv/AlaselaMaster.csv</code>: Production and dispatch material names</li>
+                <li><code>docs/csv/AlaselaDispatched.csv</code>: Transaction material type names</li>
+                <li><code>docs/csv/AlaselaInventory.csv</code>: Inventory material titles</li>
+                <li><code>docs/analysis/DATA_STRUCTURE_ANALYSIS.md</code>: Material analysis findings</li>
+            </ul>
+            <p>No assumptions or inventions have been made; all content adheres to observed data.</p>
+        </section>
+
+        <section aria-labelledby="standardization-principles">
+            <h2 id="standardization-principles">Standardization Principles</h2>
+            <p>To achieve data consistency:</p>
+            <ol>
+                <li><strong>Canonical Names</strong>: One authoritative name per material.</li>
+                <li><strong>No Aliases in Core Schema</strong>: Variations stored separately for mapping.</li>
+                <li><strong>Case Sensitivity</strong>: PascalCase for multi-word names.</li>
+                <li><strong>Size Notation</strong>: Fractional inches (e.g., "3/4") or metric (e.g., "0-5mm").</li>
+                <li><strong>No Prefixes/Suffixes</strong>: Avoid terms like "New" or "Modified".</li>
+            </ol>
+            <article aria-labelledby="key-relationships-heading">
+                <h3 id="key-relationships">Key Relationships</h3>
+                <div class="mermaid">---
+config:
+  layout: elk
+---
+erDiagram
+ direction LR
+ Dashboard {
+ }
+ Equipment {
+ }
+ Personnel {
+ }
+ Materials {
+ }
+ MaterialsAliases {
+ }
+ DailyProduction {
+ }
+ DispatchTransactions {
+ }
+ InventorySnapshots {
+ }
+ EquipmentUsage {
+ }
+ ManpowerAttendance {
+ }
+
+ Dashboard}o--||Equipment:"Attendance"
+ Dashboard}o--||Personnel:"Attendance"
+ Dashboard}o--||Materials:"Asset"
+ MaterialsAliases||--o{DailyProduction:"produces"
+ MaterialsAliases||--o{DispatchTransactions:"contains"
+ MaterialsAliases||--o{InventorySnapshots:"snapshots"
+ Materials}o--||MaterialsAliases:"aliases"
+ Equipment||--||EquipmentUsage:"Hours"
+ Personnel||--||ManpowerAttendance:"Attends"
+
+ Dashboard:::core
+ Dashboard:::core
+ Equipment:::equipment
+ Equipment:::equipment
+ Personnel:::personnel
+ Personnel:::personnel
+ Materials:::materials
+ Materials:::materials
+ MaterialsAliases:::alias
+ MaterialsAliases:::alias
+ DailyProduction:::process
+ DailyProduction:::process
+ DispatchTransactions:::process
+ DispatchTransactions:::process
+ InventorySnapshots:::process
+ InventorySnapshots:::process
+ EquipmentUsage:::usage
+ EquipmentUsage:::usage
+ ManpowerAttendance:::usage
+ ManpowerAttendance:::usage
+                </div>
+            </article>
+        </section>
+
+        <section aria-labelledby="material-hierarchy">
+            <h2 id="material-hierarchy">Material Hierarchy</h2>
+            <p>Materials are categorized in a structured hierarchy reflecting processing and application patterns observed in the sources:</p>
+            <pre data-role="codeBlock" data-info="lua" class="language-lua lua"><code>Materials
+├── <span class="token function">Aggregates</span> <span class="token punctuation">(</span>Size<span class="token operator">-</span>Graded Stone<span class="token punctuation">)</span>
+│   ├── Coarse <span class="token function">Aggregates</span> <span class="token punctuation">(</span><span class="token operator">&gt;</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">2</span>"<span class="token punctuation">)</span>
+│   ├── Medium <span class="token function">Aggregates</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">4</span><span class="token string">" - 1/2"</span><span class="token punctuation">)</span>
+│   ├── Fine <span class="token function">Aggregates</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span><span class="token number">1</span><span class="token operator">/</span><span class="token number">4</span>"<span class="token punctuation">)</span>
+│   └── Specialty Sizes
+├── Base <span class="token function">Materials</span> <span class="token punctuation">(</span>Construction Foundations<span class="token punctuation">)</span>
+│   ├── Subbase
+│   ├── Subgrade
+│   └── Base Course
+├── Fine <span class="token function">Materials</span> <span class="token punctuation">(</span>Sand <span class="token operator">&amp;</span> Powder<span class="token punctuation">)</span>
+│   ├── Sand
+│   ├── Powder
+│   └── Micro Materials
+├── Processed Materials
+│   ├── <span class="token function">Oversize</span> <span class="token punctuation">(</span>Unprocessed Large Material<span class="token punctuation">)</span>
+│   ├── Size<span class="token operator">-</span><span class="token function">Graded</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>g<span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token operator">-</span>5mm<span class="token punctuation">)</span>
+│   └── Application<span class="token operator">-</span>Specific
+└── Specialty Products
+    ├── Drainage Materials
+    ├── Pipe Bedding
+    └── Specification<span class="token operator">-</span><span class="token function">Based</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>g<span class="token punctuation">.</span><span class="token punctuation">,</span> A1A<span class="token punctuation">,</span> ABC<span class="token punctuation">)</span>
+</code></pre>
+            <p>This hierarchy supports logical grouping for data queries and reporting.</p>
+        </section>
+
+        <section aria-labelledby="canonical-material-catalog">
+            <h2 id="canonical-material-catalog">Canonical Material Catalog</h2>
+            <p>The catalog defines 25 materials with unique IDs, canonical names, categories, size details, and specifications. Active status indicates materials with observed activity in sources.</p>
+            <article aria-labelledby="coarse-aggregates">
+                <h3 id="coarse-aggregates">Coarse Aggregates</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size (inches)</th>
+                                <th>Size (mm)</th>
+                                <th>Specification</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AGG-200</td>
+                                <td>Aggregate 2"</td>
+                                <td>2.0</td>
+                                <td>50.8</td>
+                                <td>Coarse aggregate 2 inch</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>AGG-150</td>
+                                <td>Aggregate 1.5"</td>
+                                <td>1.5</td>
+                                <td>38.1</td>
+                                <td>Coarse aggregate 1.5 inch</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>AGG-100</td>
+                                <td>Aggregate 1"</td>
+                                <td>1.0</td>
+                                <td>25.4</td>
+                                <td>Coarse aggregate 1 inch</td>
+                                <td>No</td>
+                            </tr>
+                            <tr>
+                                <td>AGG-075</td>
+                                <td>Aggregate 3/4"</td>
+                                <td>0.75</td>
+                                <td>19.05</td>
+                                <td>Coarse aggregate 3/4 inch</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="medium-aggregates">
+                <h3 id="medium-aggregates">Medium Aggregates</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size (inches)</th>
+                                <th>Size (mm)</th>
+                                <th>Specification</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AGG-050</td>
+                                <td>Aggregate 1/2"</td>
+                                <td>0.5</td>
+                                <td>12.7</td>
+                                <td>Medium aggregate 1/2 inch</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>AGG-038</td>
+                                <td>Aggregate 3/8"</td>
+                                <td>0.375</td>
+                                <td>9.525</td>
+                                <td>Medium aggregate 3/8 inch</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="fine-aggregates">
+                <h3 id="fine-aggregates">Fine Aggregates</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size (inches)</th>
+                                <th>Size (mm)</th>
+                                <th>Specification</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>AGG-019</td>
+                                <td>Zero 3/16"</td>
+                                <td>0.1875</td>
+                                <td>4.7625</td>
+                                <td>Fine aggregate 3/16 inch</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>AGG-006</td>
+                                <td>Micro 1/16"</td>
+                                <td>0.0625</td>
+                                <td>1.5875</td>
+                                <td>Micro aggregate 1/16 inch</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="base-materials">
+                <h3 id="base-materials">Base Materials</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Specification</th>
+                                <th>Application</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BASE-SUB</td>
+                                <td>Subbase</td>
+                                <td>Foundation subbase material</td>
+                                <td>Road/foundation construction</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>BASE-GRD</td>
+                                <td>Subgrade</td>
+                                <td>Prepared subgrade</td>
+                                <td>Foundation preparation</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>BASE-CRS</td>
+                                <td>Base Course</td>
+                                <td>Aggregate base course</td>
+                                <td>Road base layer</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>BASE-ABC</td>
+                                <td>ABC</td>
+                                <td>Aggregate Base Course</td>
+                                <td>Road construction</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="fine-materials">
+                <h3 id="fine-materials">Fine Materials</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size Range</th>
+                                <th>Specification</th>
+                                <th>Application</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>FINE-SND</td>
+                                <td>Sand</td>
+                                <td>&lt;4.75mm</td>
+                                <td>Fine aggregate sand</td>
+                                <td>Fill, concrete, mortar</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>FINE-PWD</td>
+                                <td>Powder</td>
+                                <td>&lt;0.075mm</td>
+                                <td>Extra fine material</td>
+                                <td>Cleaning, filler</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>FINE-05M</td>
+                                <td>Material 0-5mm</td>
+                                <td>0-5mm</td>
+                                <td>Size-graded fine</td>
+                                <td>Specific applications</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="processed-materials">
+                <h3 id="processed-materials">Processed Materials</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size Range</th>
+                                <th>Specification</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>PROC-OVS</td>
+                                <td>Oversize</td>
+                                <td>&gt;2"</td>
+                                <td>Material too large for standard processing</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>PROC-FED</td>
+                                <td>Feed</td>
+                                <td>Variable</td>
+                                <td>Input material for crushing</td>
+                                <td>No</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+            <article aria-labelledby="specialty-products">
+                <h3 id="specialty-products">Specialty Products</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Material ID</th>
+                                <th>Canonical Name</th>
+                                <th>Size Range</th>
+                                <th>Specification</th>
+                                <th>Application</th>
+                                <th>Active</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SPEC-A1A</td>
+                                <td>A1A</td>
+                                <td>Variable</td>
+                                <td>Specification-based material</td>
+                                <td>Specific contract requirement</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>SPEC-PBD</td>
+                                <td>Pipe Bedding</td>
+                                <td>Variable</td>
+                                <td>Pipe laying bedding material</td>
+                                <td>Utility installation</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>SPEC-RPD</td>
+                                <td>Rapid Draining</td>
+                                <td>Variable</td>
+                                <td>High-drainage aggregate</td>
+                                <td>Drainage systems</td>
+                                <td>Yes</td>
+                            </tr>
+                            <tr>
+                                <td>SPEC-SC1</td>
+                                <td>SC1 (0-38mm)</td>
+                                <td>0-38mm</td>
+                                <td>Size specification SC1</td>
+                                <td>Specification requirement</td>
+                                <td>Yes</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <section aria-labelledby="material-properties-schema">
+            <h2 id="material-properties-schema">Material Properties Schema</h2>
+            <p>Each material record includes:</p>
+            <ul>
+                <li>Material ID (primary key, e.g., "AGG-075")</li>
+                <li>Canonical Name (e.g., "Aggregate 3/4"")</li>
+                <li>Category (enum: Coarse Aggregate, Medium Aggregate, etc.)</li>
+                <li>Subcategory</li>
+                <li>Size Min/Max (mm)</li>
+                <li>Size Notation (human-readable)</li>
+                <li>Unit of Measure ("Ton")</li>
+                <li>Specification</li>
+                <li>Application</li>
+                <li>Active Flag</li>
+                <li>Timestamps (Created/Updated)</li>
+            </ul>
+            <p>This schema ensures type-strict data storage.</p>
+        </section>
+
+        <section aria-labelledby="material-aliases">
+            <h2 id="material-aliases">Material Aliases</h2>
+            <p>35 variations observed in sources are mapped to canonical IDs for legacy data integration. Examples:</p>
+            <ul>
+                <li>"3/4"" → AGG-075 (Aggregate 3/4")</li>
+                <li>"sand" → FINE-SND (Sand)</li>
+                <li>"Sub-base" → BASE-SUB (Subbase)</li>
+            </ul>
+            <p>Full mapping table available for ETL processes.</p>
+        </section>
+
+        <section aria-labelledby="material-grouping-for-reporting">
+            <h2 id="material-grouping-for-reporting">Material Grouping for Reporting</h2>
+            <p>Groupings based on categories:</p>
+            <ul>
+                <li><strong>Aggregates</strong>: AGG-200, AGG-075, AGG-050, AGG-038, AGG-019</li>
+                <li><strong>Base Materials</strong>: BASE-SUB, BASE-GRD, BASE-CRS, BASE-ABC</li>
+                <li><strong>Fine Materials</strong>: FINE-SND, FINE-PWD, FINE-05M</li>
+                <li><strong>Specialty Products</strong>: PROC-OVS, SPEC-A1A, SPEC-PBD, SPEC-RPD, SPEC-SC1</li>
+            </ul>
+            <p>Use for aggregated queries.</p>
+        </section>
+
+        <section aria-labelledby="usage-guidelines">
+            <h2 id="usage-guidelines">Usage Guidelines</h2>
+            <p><strong>Database</strong>:</p>
+            <ul>
+                <li>Primary Key: Material ID</li>
+                <li>Display: Canonical Name</li>
+                <li>Filtering: By category and active status</li>
+            </ul>
+            <p><strong>Data Entry</strong>:</p>
+            <ul>
+                <li>Reference canonical names only</li>
+                <li>Use dropdowns for selection</li>
+                <li>Detect and alert on potential aliases</li>
+            </ul>
+            <p><strong>Reporting</strong>:</p>
+            <ul>
+                <li>Group by category</li>
+                <li>Sort by Material ID</li>
+                <li>Filter active materials</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="validation-rules">
+            <h2 id="validation-rules">Validation Rules</h2>
+            <ul>
+                <li>Material names must match canonical or alias lists; no prohibited terms (e.g., "new", "updated").</li>
+                <li>Material IDs follow pattern: {CATEGORY}-{CODE} (e.g., AGG-075).</li>
+            </ul>
+        </section>
+
+        <section aria-labelledby="conclusion">
+            <h2 id="conclusion">Conclusion</h2>
+            <p>This taxonomy covers 100% of 25 materials from sources, with 7 categories and 35 alias mappings. It provides a technical foundation for standardized data handling in the facility's systems.</p>
+        </section>
+      </main>
+
+      <footer class="page-footer">
+          <p>This system simplifies our operations while preserving all essential details—let's discuss how it fits our business goals.</p>
+          <button class="export-button" onclick="window.print()" aria-label="Export as PDF">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2v9.67z"/>
+            </svg>
+            <span>Export as PDF</span>
+          </button>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Mermaid.js
+        mermaid.initialize({ startOnLoad: false, theme: 'default' });
+        mermaid.run({ nodes: document.querySelectorAll('.mermaid') });
+
+        // Dynamic Table of Contents generation and scroll-aware highlighting
+        const tocContainer = document.getElementById('toc-nav');
+        const mainContent = document.getElementById('main-content');
+        if (!tocContainer || !mainContent) return;
+
+        const headings = mainContent.querySelectorAll('h2, h3');
+        if (headings.length === 0) return;
+
+        let tocHtml = '<h2>On this page</h2><ul>';
+        headings.forEach(heading => {
+            const level = heading.tagName.toLowerCase(); // h2 or h3
+            const text = heading.textContent;
+            const id = heading.id;
+            if (id) {
+                tocHtml += `<li class="toc-level-${level.charAt(1)}"><a href="#${id}">${text}</a></li>`;
+            }
+        });
+        tocHtml += '</ul>';
+        tocContainer.innerHTML = tocHtml;
+
+        const tocLinks = tocContainer.querySelectorAll('a');
+
+        const observer = new IntersectionObserver(entries => {
+            let visibleSectionId = null;
+
+            // Find the first section that is intersecting from the top
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                  visibleSectionId = entry.target.id;
+                  break;
+              }
+            }
+
+            // If scrolled to the bottom, highlight the last item
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                const lastHeading = headings[headings.length - 1];
+                if (lastHeading) {
+                    visibleSectionId = lastHeading.id;
+                }
+            }
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${visibleSectionId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -80% 0px', // Trigger when a heading is in the top 20% of the viewport
+            threshold: 0
+        });
+
+        headings.forEach(heading => {
+            observer.observe(heading);
+        });
+      });
+    </script>
+</body>
+</html>
