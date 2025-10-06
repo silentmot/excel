@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx prisma migrate status:*)",
+      "Bash(bun test:*)",
+      "Bash(bunx nx show:*)"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "outputStyle": "Learning"
+}

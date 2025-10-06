@@ -111,7 +111,7 @@ Ensure you have installed:
 
 ```bash
 # Clone/navigate to project directory
-cd F:\excel\ops
+cd  ops
 
 # Install dependencies (if not already done)
 bun install
