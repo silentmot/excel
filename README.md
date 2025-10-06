@@ -172,7 +172,7 @@ F:\excel\ops/
 
 ### **Why Next.js Only?**
 
-**Scale Reality**: 15-20 users with daily entry patterns means ~100 requests/day. Next.js API routes handle 100,000+ requests/second. A separate NestJS backend would be 1,000x over-engineered.
+**Scale Reality**: 15-20 users with daily entry patterns means ~100 requests/day. Next.js API routes handle 100,000+ requests/second.
 
 **Benefits**:
 

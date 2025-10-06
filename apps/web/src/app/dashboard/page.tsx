@@ -3,11 +3,11 @@ import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
   const session = await auth()
-  
+
   if (!session) {
     redirect('/auth/signin')
   }
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -138,7 +138,7 @@ export default async function DashboardPage() {
           <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <button className="rounded-lg border border-gray-200 bg-white p-4 text-left hover:bg-gray-50">
               <h3 className="font-medium text-gray-900">Daily Entry</h3>
-              <p className="mt-1 text-sm text-gray-500">Record today's operations</p>
+              <p className="mt-1 text-sm text-gray-500">Record today&apos;s operations</p>
             </button>
             <button className="rounded-lg border border-gray-200 bg-white p-4 text-left hover:bg-gray-50">
               <h3 className="font-medium text-gray-900">View Reports</h3>

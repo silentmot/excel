@@ -212,7 +212,7 @@ graph LR
 
 ### **Material Type Hierarchy**
 
-```
+```lua
 Construction Materials
 ├── Aggregates
 │   ├── Coarse (3/4", 1/2", 3/8")
@@ -361,7 +361,7 @@ Construction Materials
    - TotalProduction
    - TotalDispatch
    - EquipmentHours
-   - WorkforceCount
+   - WorkforceCount/hours
 
 ### **Normalization Requirements**
 

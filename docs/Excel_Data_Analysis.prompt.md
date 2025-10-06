@@ -8,7 +8,13 @@
 
 ### **Objective**
 
-Analyze the Excel spreadsheet ``docs/alasla.csv`` to understand data structure, identify patterns, and design a proper database schema for construction site operations management.
+Analyze the Excel spreadsheets
+` docs/csv/AlaselaMaster.csv`
+` docs/csv/AlaselaDispatched.csv`
+` docs/csv/AlaselaEquipment.csv`
+` docs/csv/AlaselaInventory.csv`
+
+to understand data structure, identify patterns, and design a proper database schema for construction & demolition recycling facility operations management.
 
 ### **Current State Assessment**
 
@@ -20,11 +26,61 @@ The spreadsheet contains unstructured daily input logs that require transformati
 
 | **Property**       | **Details**                                   |
 | ------------------ | --------------------------------------------- |
-| **File Path**      | ``docs/alasla.csv``                             |
-| **Site Scope**     | Single construction site operations           |
+| **Site Scope**     | construction & demolition recycling facility          |
 | **Data Type**      | Daily operational logs and reports            |
 | **Current Format** | Unstructured Excel workbook                   |
 | **Target Format**  | Relational database + Dashboard-ready exports |
+
+---
+
+## **CSV Data Flow Architecture**
+
+### **Input Sources and Derived Outputs**
+
+```mermaid
+graph TB
+    subgraph "Daily Input Sources"
+        M[AlasselaMaster.csv<br/>PRIMARY INPUT<br/>Daily Operations Data]
+        D[AlaselaDispatched.csv<br/>SUPPLEMENTARY INPUT<br/>Daily Dispatch Records]
+    end
+
+    subgraph "Derived Reports"
+        P[AlaselaProduction.csv<br/>DERIVED OUTPUT<br/>Production Metrics]
+        I[AlaselaInventory.csv<br/>DERIVED OUTPUT<br/>Stock Levels]
+    end
+
+    subgraph "Supporting Data"
+        E[AlaselaEquipment.csv<br/>Attendance DATA<br/>Resource Tracking]
+    end
+
+    M -->|Feeds Production Data| P
+    M -->|Feeds Initial Inventory| I
+    D -->|Affects Stock Levels| I
+    M -.->|References| E
+
+    style M fill:#4CAF50,stroke:#2E7D32,stroke-width:3px,color:#fff
+    style D fill:#2196F3,stroke:#1565C0,stroke-width:3px,color:#fff
+    style P fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style I fill:#FF9800,stroke:#E65100,stroke-width:2px,color:#fff
+    style E fill:#9E9E9E,stroke:#424242,stroke-width:2px,color:#fff
+```
+
+### **Data Relationship Summary**
+
+| **File** | **Type** | **Function** | **Data Source** |
+|----------|----------|--------------|-----------------|
+| **AlasselaMaster.csv** | Primary Input | Daily operations staging | Manual daily entry |
+| **AlaselaDispatched.csv** | Supplementary Input | Material outflow tracking | Manual daily entry |
+| **AlaselaProduction.csv** | Derived Output | Production reporting | Calculated from Master |
+| **AlaselaInventory.csv** | Derived Output | Stock management | Master (inflow) + Dispatched (outflow) |
+| **AlaselaEquipment.csv** | Attendance Data | Equipment Operations Hours | Referenced by Master |
+
+### **Data Flow Logic**
+
+1. **Master → Production**: Production metrics are calculated from Master's processing records
+2. **Master → Inventory**: New materials and processed stock are added from Master
+3. **Dispatched → Inventory**: Outbound materials reduce inventory levels
+4. **Master ↔ Equipment**: Master operations reference equipment availability
 
 ---
 
@@ -58,7 +114,7 @@ graph LR
 | **Function**     | **Records**                |
 | ---------------- | -------------------------- |
 | Material Outflow | Dispatched quantities      |
-| Transaction Log  | Material movement tracking |
+| Transaction Log  | Material volume tracking   |
 | Delivery Records | Distribution documentation |
 
 ### **3. Number of Equipment Sheet**
@@ -69,7 +125,7 @@ graph LR
 | -------------------- | ---------------------------- |
 | Equipment Status     | Daily equipment availability |
 | Workforce Attendance | Personnel tracking           |
-| Resource Utilization | Operational capacity         |
+
 
 ### **4. Production Report Sheet**
 
@@ -113,6 +169,8 @@ The current naming convention shows size variations of the same base material:
 - **Subbase** (foundation material)
 - **Sand** (fine material)
 - **[Other materials to be identified]**
+
+>Need to standardize material taxonomy for database normalization. and reanalyze material types.
 
 ---
 
@@ -184,17 +242,17 @@ The current naming convention shows size variations of the same base material:
 
 ### **Immediate Actions Required**
 
-1. **Access Excel File**: Open and examine ``docs/alasla.csv``
+1. **Access Excel File**: Open and examine ``docs/csv/**.csv``
 2. **Sheet Documentation**: Record detailed structure for each sheet
 3. **Sample Data Extraction**: Capture representative data samples
 4. **Pattern Analysis**: Identify data flow patterns
 
 ### **Success Criteria**
 
-- ✅ Complete understanding of current data structure
-- ✅ Documented relationships between sheets
-- ✅ Standardized material classification system
-- ✅ Database schema design ready for implementation
+- [ ] Complete understanding of current data structure
+- [ ] Documented relationships between sheets
+- [ ] Standardized material classification system
+- [ ] Database schema design ready for implementation
 
 ---
 

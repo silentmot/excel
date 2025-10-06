@@ -12,7 +12,7 @@ datasource db {
 
 // ============================================================================
 // NextAuth.js Models
-// Required for authentication with Azure AD
+// Required for authentication
 // ============================================================================
 
 model Account {
@@ -51,6 +51,7 @@ model User {
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
+  password      String? // Added for email/password authentication
   accounts      Account[]
   sessions      Session[]
 
@@ -72,27 +73,27 @@ model VerificationToken {
 // ============================================================================
 
 model Material {
-  id          Int       @id @default(autoincrement()) @map("material_id")
-  name        String    @unique @db.VarChar(100)
-  size        String?   @db.VarChar(50)
-  category    String?   @db.VarChar(50)
-  description String?   @db.Text
-  
+  id          Int     @id @default(autoincrement()) @map("material_id")
+  name        String  @unique @db.VarChar(100)
+  size        String? @db.VarChar(50)
+  category    String? @db.VarChar(50)
+  description String? @db.Text
+
   // Relations
-  production  DailyProduction[]
-  dispatched  DailyDispatched[]
-  
+  production DailyProduction[]
+  dispatched DailyDispatched[]
+
   @@map("materials")
 }
 
 model Equipment {
-  id    Int    @id @default(autoincrement()) @map("equipment_id")
-  name  String @unique @db.VarChar(100)
-  type  String @db.VarChar(100)
-  
+  id   Int    @id @default(autoincrement()) @map("equipment_id")
+  name String @unique @db.VarChar(100)
+  type String @db.VarChar(100)
+
   // Relations
   usage DailyEquipmentUsage[]
-  
+
   @@map("equipment")
 }
 
@@ -100,10 +101,10 @@ model ManpowerRole {
   id        Int    @id @default(autoincrement()) @map("role_id")
   modelcode String @unique @db.VarChar(50)
   name      String @db.VarChar(100)
-  
+
   // Relations
-  manpower  DailyManpower[]
-  
+  manpower DailyManpower[]
+
   @@map("manpower_roles")
 }
 
@@ -112,10 +113,10 @@ model OperationMetric {
   code String @db.VarChar(50)
   name String @db.VarChar(100)
   unit String @db.VarChar(10)
-  
+
   // Relations
   operations DailyOperation[]
-  
+
   @@map("operation_metrics")
 }
 
@@ -131,10 +132,10 @@ model DailyProduction {
   quantity   Decimal  @db.Decimal(10, 2)
   shift      String   @default("D&N") @db.VarChar(10)
   unit       String   @default("Ton") @db.VarChar(10)
-  
+
   // Relations
-  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
-  
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([date, materialId])
   @@map("daily_production")
@@ -147,10 +148,10 @@ model DailyDispatched {
   quantity   Decimal  @db.Decimal(10, 2)
   shift      String   @default("D&N") @db.VarChar(10)
   unit       String   @default("Ton") @db.VarChar(10)
-  
+
   // Relations
-  material   Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
-  
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([date, materialId])
   @@map("daily_dispatched")
@@ -163,26 +164,26 @@ model DailyEquipmentUsage {
   hours       Decimal  @db.Decimal(5, 1)
   shift       String   @default("D&N") @db.VarChar(10)
   unit        String   @default("Hrs.") @db.VarChar(10)
-  
+
   // Relations
-  equipment   Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
-  
+  equipment Equipment @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([date, equipmentId])
   @@map("daily_equipment_usage")
 }
 
 model DailyManpower {
-  id      Int      @id @default(autoincrement()) @map("manpower_id")
-  date    DateTime @db.Date
-  roleId  Int      @map("role_id")
-  count   Int
-  shift   String   @default("D&N") @db.VarChar(10)
-  unit    String   @default("Number") @db.VarChar(10)
-  
+  id     Int      @id @default(autoincrement()) @map("manpower_id")
+  date   DateTime @db.Date
+  roleId Int      @map("role_id")
+  count  Int
+  shift  String   @default("D&N") @db.VarChar(10)
+  unit   String   @default("Number") @db.VarChar(10)
+
   // Relations
-  role    ManpowerRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
-  
+  role ManpowerRole @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([date, roleId])
   @@map("daily_manpower")
@@ -194,10 +195,10 @@ model DailyOperation {
   metricId Int      @map("metric_id")
   value    Decimal  @db.Decimal(10, 2)
   shift    String   @default("D&N") @db.VarChar(10)
-  
+
   // Relations
-  metric   OperationMetric @relation(fields: [metricId], references: [id], onDelete: Cascade)
-  
+  metric OperationMetric @relation(fields: [metricId], references: [id], onDelete: Cascade)
+
   // Constraints
   @@unique([date, metricId])
   @@map("daily_operations")

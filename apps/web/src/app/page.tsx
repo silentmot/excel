@@ -4,12 +4,12 @@ import Link from "next/link"
 
 export default async function HomePage() {
   const session = await auth()
-  
+
   // If user is already authenticated, redirect to dashboard
   if (session) {
     redirect('/dashboard')
   }
-  
+
   // Otherwise, show landing page with sign-in option
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -78,7 +78,7 @@ export default async function HomePage() {
         {/* CTA Button */}
         <div className="mt-12">
           <Link
-            href="/auth/signin"
+            href="/auth/login"
             className="inline-flex items-center rounded-lg bg-blue-600 px-8 py-4 text-lg font-medium text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             Sign In with Microsoft
