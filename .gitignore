@@ -1,12 +1,13 @@
 # See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # compiled output
-dist
-tmp
-out-tsc
+**/dist
+**/tmp
+**/out-tsc
 
 # dependencies
-node_modules
+**/node_modules
+**/html
 
 # IDEs and editors
 /.idea
@@ -16,7 +17,7 @@ node_modules
 *.launch
 .settings/
 *.sublime-workspace
-
+bun.lock
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
@@ -48,3 +49,5 @@ Thumbs.db
 out
 
 test-output
+.env
+**/.env

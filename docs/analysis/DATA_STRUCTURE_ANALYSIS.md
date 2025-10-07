@@ -468,7 +468,7 @@ Calculated inventory summary showing opening balance, production, dispatched qua
 
 ### Primary Data Flow
 
-```
+```lua
 Master File (Staging)
 ├── Production Records → Inventory (Production column)
 ├── Dispatched Records → Inventory (Dispatched column)

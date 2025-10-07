@@ -6,7 +6,6 @@
 
 ## **Project Overview**
 
-
 The objective of this project is to transform an Excel file ({file}.xlsx) into a web application that can perform the same mathematical calculations previously handled by Excel. The goal is to create a user-friendly interface that simplifies daily data entry.
 
 To achieve this, the development will utilize Next.js, allowing for seamless data entry and the creation of a visually appealing dashboard. This dashboard will offer various export options, including Web app formats, Excel files, and Power BI reports.
@@ -16,10 +15,10 @@ Additionally, user authentication will be implemented using Simple NextAuth to e
 ### **Task**
 
 Analyze the Excel spreadsheets
-` docs/csv/AlaselaMaster.csv`
-` docs/csv/AlaselaDispatched.csv`
-` docs/csv/AlaselaEquipment.csv`
-` docs/csv/AlaselaInventory.csv`
+`docs/csv/AlaselaMaster.csv`
+`docs/csv/AlaselaDispatched.csv`
+`docs/csv/AlaselaEquipment.csv`
+`docs/csv/AlaselaInventory.csv`
 
 to understand data structure, identify patterns, and design a proper database schema for construction & demolition recycling facility operations management.
 
@@ -111,7 +110,12 @@ graph LR
     A[Master File Daily Input] --> B[Production Report]
     A --> C[Inventory Report]
     A --> D[Dispatched Report]
-    A --> E[Equipment Numbers]
+    A --> E[Equipment Usage]
+    A --> F[Attendance Data]
+    B --> G[Dashboard]
+    C --> G[Dashboard]
+    D --> G[Dashboard]
+    F --> G[Dashboard]
 ```
 
 ### **2. Dispatched Report Sheet**
@@ -132,7 +136,6 @@ graph LR
 | -------------------- | ---------------------------- |
 | Equipment Status     | Daily equipment availability |
 | Workforce Attendance | Personnel tracking           |
-
 
 ### **4. Production Report Sheet**
 
@@ -218,7 +221,6 @@ The current naming convention shows size variations of the same base material:
 
 ### **Phase 3: Implementation Planning**
 
-- [ ] **Migration Strategy**: Plan data transformation approach
 - [ ] **Dashboard Requirements**: Specify reporting needs
 - [ ] **Integration Points**: Define system interfaces
 - [ ] **Validation Framework**: Establish data quality checks
@@ -299,7 +301,6 @@ The current naming convention shows size variations of the same base material:
 | Entity-Relationship Diagram | ERD | Normalized database schema design |
 | SQL Schema Scripts | SQL | Table creation and constraint definitions |
 | Data Dictionary | Markdown | Complete field specifications per table |
-| Migration Plan | Markdown | Step-by-step data transformation strategy |
 
 ### **Phase 3: Implementation Assets**
 
@@ -324,7 +325,7 @@ The current naming convention shows size variations of the same base material:
 | **Phase** | **Milestone** |
 |-----------|-------------|---------------|
 | Phase 1 | Analysis complete, schema designed |
-| Phase 2 | Database created, migration tested |
+| Phase 2 | Database created |
 | Phase 3 | Application developed, dashboards operational |
 | Phase 4 |  Production deployment, user training |
 
@@ -332,19 +333,19 @@ The current naming convention shows size variations of the same base material:
 
 - Docs
 
-    - [ ] All CSV files analyzed and documented
-    - [ ] Database schema normalized to 3NF
-    - [ ] Data relationships clearly mapped
-    - [ ] Material classification standardized
-    - [ ] Comprehensive analysis report delivered & README.md for new implementation using bun with NX CLI
+  - [ ] All CSV files analyzed and documented
+  - [ ] Database schema normalized to 3NF
+  - [ ] Data relationships clearly mapped
+  - [ ] Material classification standardized
+  - [ ] Comprehensive analysis report delivered & README.md for new implementation using bun with NX CLI
 
 - Plan & Strategy
 
-    - [ ] Web application accepts daily input matching Master file structure
-    - [ ] Dashboards replicate Excel report functionality
-    - [ ] Export capabilities operational (Web, Excel, Power BI)
-    - [ ] User authentication functional
-    - [ ] Data integrity validation passes
-    - [ ] Performance requirements met
+  - [ ] Web application accepts daily input matching Master file corrected structure
+  - [ ] Dashboards replicate Excel report functionality
+  - [ ] Export capabilities operational (Web, Excel, Power BI)
+  - [ ] User authentication functional
+  - [ ] Data integrity validation passes
+  - [ ] Performance requirements met
 
 ---
